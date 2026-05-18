@@ -53,9 +53,9 @@ export default function RootLayout({
       "Vídeo-Eletroencefalografia VEEG"
     ],
     "telephone": "+553191294704",
-    "email": "sac@institutodosonomg.com.br",
-    "url": "https://www.institutodosonomg.com.br",
-    "logo": "https://www.institutodosonomg.com.br/images/logo-instituto-do-sono.png",
+    "email": "sac@institutodosonobh.com.br",
+    "url": "https://www.institutodosonobh.com.br",
+    "logo": "https://www.institutodosonobh.com.br/images/logo-instituto-do-sono.png",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Rua dos Aimorés, 3018 - Sala 704 - Barro Preto",
