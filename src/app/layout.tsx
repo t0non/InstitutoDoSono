@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  verification: {
+    google: '8ngk8qE99iwcOEMSux4Tts0Ws6w9UYbmZLx6DSTPAPU',
   }
 };
 
