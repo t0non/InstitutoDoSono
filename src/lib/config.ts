@@ -1,7 +1,7 @@
 export const config = {
   whatsappNumber: '553191294704',
   get whatsappLink() {
-    return `https://wa.me/${this.whatsappNumber}`;
+    return `https://wa.me/${this.whatsappNumber}?text=Olá,%20gostaria%20de%20agendar%20um%20exame%20ou%20consulta.`;
   },
   get whatsappLinkUrgent() {
     return `https://wa.me/${this.whatsappNumber}?text=Preciso%20de%20atendimento%20domiciliar`;
