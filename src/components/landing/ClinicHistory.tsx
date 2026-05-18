@@ -34,27 +34,38 @@ export default function ClinicHistory() {
   };
 
   return (
-    <section id="clinica" className="history-section">
-      <div className="container">
+    <section id="clinica" aria-labelledby="clinica-title" className="history-section">
+      <div className="container flex flex-col">
+        {/* Mobile Header (Shows above images) */}
+        <div className="category-header flex flex-row items-center gap-2 mb-6 lg:hidden" style={{ border: 'none', paddingBottom: 0 }}>
+           <Building className="icon shrink-0 text-[#2563eb]" aria-hidden="true" />
+           <h2 id="clinica-title-mobile" className="flex-1 min-w-0 text-xl font-bold text-[#0b2447]">Clínica do Sono em Belo Horizonte: Tradição e Tecnologia</h2>
+        </div>
+
         <div className="history-grid items-start">
-          <div className="history-text" data-aos="fade-right">
-            <div className="category-header" style={{ border: 'none', paddingBottom: 0, justifyContent: 'flex-start' }}>
-               <Building className="icon" />
-               <h3>Clínica do Sono em Belo Horizonte: Tradição e Tecnologia</h3>
-            </div>
-            <p style={{ color: 'var(--text-light)', marginBottom: '20px', lineHeight: '1.7' }}>
-              Desde <strong>1994</strong>, o <strong>Instituto do Sono de Minas Gerais</strong> é a principal referência em <strong>medicina do sono e neurologia em Belo Horizonte</strong>. Com mais de 30 anos de atuação, unimos a tradição e a alta especialização de um corpo clínico renomado às mais modernas tecnologias diagnósticas para entregar laudos rápidos e tratamentos humanizados de excelência.
+          {/* Text Content */}
+          <div className="history-text min-w-0 order-last lg:order-first" data-aos="fade-right">
+            {/* Desktop Header */}
+            <header className="category-header hidden lg:flex flex-row items-center gap-2" style={{ border: 'none', paddingBottom: 0 }}>
+               <Building className="icon shrink-0 text-[#2563eb]" aria-hidden="true" />
+               <h2 id="clinica-title" className="flex-1 min-w-0 text-2xl font-bold text-[#0b2447]">Clínica do Sono em Belo Horizonte: Tradição e Tecnologia</h2>
+            </header>
+            
+            <p className="text-[#64748b] mb-4 leading-relaxed">
+              Desde <strong>1994</strong>, o <strong>Instituto do Sono de Minas Gerais</strong> é a principal referência em <strong>medicina do sono e neurologia em Belo Horizonte</strong>. Nossa missão é entregar diagnósticos precisos e acolhimento humano através de:
             </p>
-            <p style={{ color: 'var(--text-light)', marginBottom: '20px', lineHeight: '1.7' }}>
-              Nossa sede própria, localizada estrategicamente no bairro <strong>Barro Preto (BH)</strong>, foi projetada sob rígidos padrões de acessibilidade. Oferecemos uma infraestrutura completa e acolhedora, totalmente equipada para cuidar do bem-estar e da saúde de toda a sua família com máxima segurança.
-            </p>
-            <p style={{ color: 'var(--text-light)', lineHeight: '1.7' }}>
-              Nossas suítes de exames contam com <strong>isolamento acústico completo</strong>, camas confortáveis de padrão hoteleiro e climatização sob medida, simulando perfeitamente a tranquilidade do seu lar. Assim, exames essenciais como a <strong>Polissonografia clínica</strong> e o <strong>Eletroencefalograma (EEG)</strong> ocorrem de forma 100% natural, segura e indolor, garantindo diagnósticos de alta precisão para ronco, apneia e insônia.
-            </p>
+            
+            <ul className="list-disc pl-5 mb-6 text-[#64748b] leading-relaxed space-y-2">
+              <li><strong>Tradição e Especialização:</strong> Mais de 30 anos de atuação com corpo clínico renomado e titulado.</li>
+              <li><strong>Infraestrutura Completa em BH:</strong> Sede própria no <strong>Barro Preto</strong> projetada sob rígidos padrões de acessibilidade e conforto.</li>
+              <li><strong>Suítes de Exames Padrão Hotel:</strong> Isolamento acústico, camas confortáveis e climatização para simular o seu lar.</li>
+              <li><strong>Diagnósticos Seguros e Indolores:</strong> Exames como a <strong>Polissonografia (clínica e domiciliar)</strong> e o <strong>Eletroencefalograma (EEG)</strong> ocorrem de forma 100% natural, essenciais para o diagnóstico de ronco, apneia e insônia.</li>
+            </ul>
           </div>
           
+          {/* Images Slider */}
           <div 
-            className="w-full flex flex-col gap-4" 
+            className="w-full flex flex-col gap-4 min-w-0 order-first lg:order-last" 
             data-aos="fade-left"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

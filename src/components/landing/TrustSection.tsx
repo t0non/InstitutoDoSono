@@ -6,7 +6,7 @@ import { WhatsAppIcon } from '../icons';
 
 export default function TrustSection() {
   return (
-    <section className="py-20 bg-[#07162c] text-white relative overflow-hidden border-t border-b border-white/5">
+    <section className="py-12 md:py-20 bg-[#07162c] text-white relative overflow-hidden border-t border-b border-white/5">
       {/* Decorative Blur Elements */}
       <div className="absolute top-1/4 left-0 w-72 h-72 bg-[#3b82f6]/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-0 w-72 h-72 bg-[#2563eb]/10 rounded-full blur-[100px] pointer-events-none" />
@@ -30,7 +30,7 @@ export default function TrustSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           
           {/* Column 1: Patients & Families */}
-          <div className="bg-white/[0.03] border border-white/5 p-8 rounded-2xl hover:border-[#3b82f6]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+          <div className="bg-white/[0.03] border border-white/5 p-6 sm:p-8 rounded-2xl hover:border-[#3b82f6]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
             <div className="w-12 h-12 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] mb-6">
               <Users size={24} />
             </div>
@@ -52,7 +52,7 @@ export default function TrustSection() {
           </div>
 
           {/* Column 2: Referrals & Doctors */}
-          <div className="bg-white/[0.03] border border-white/5 p-8 rounded-2xl hover:border-[#3b82f6]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+          <div className="bg-white/[0.03] border border-white/5 p-6 sm:p-8 rounded-2xl hover:border-[#3b82f6]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
             <div className="w-12 h-12 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] mb-6">
               <Stethoscope size={24} />
             </div>
@@ -71,7 +71,7 @@ export default function TrustSection() {
           </div>
 
           {/* Column 3: Regional Coverage */}
-          <div className="bg-white/[0.03] border border-white/5 p-8 rounded-2xl hover:border-[#3b82f6]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+          <div className="bg-white/[0.03] border border-white/5 p-6 sm:p-8 rounded-2xl hover:border-[#3b82f6]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
             <div className="w-12 h-12 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] mb-6">
               <MapPin size={24} />
             </div>
@@ -92,7 +92,7 @@ export default function TrustSection() {
         </div>
 
         {/* High Complexity Exams Summary Box */}
-        <div className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 backdrop-blur-md" data-aos="fade-up">
+        <div className="bg-white/[0.02] border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-md" data-aos="fade-up">
           <h3 className="text-lg sm:text-xl font-extrabold text-white mb-6 text-center">
             Exames de Alta Complexidade e Rigor Clínico Realizados em Nossa Clínica
           </h3>

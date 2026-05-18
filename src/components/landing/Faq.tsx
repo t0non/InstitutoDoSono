@@ -12,7 +12,7 @@ const faqItems = [
         answer: (
             <>
                 <p>Atendemos os principais planos como <strong>Unimed, Bradesco, SulAmérica, Amil, IPSM, Cassi</strong>, entre outros.</p>
-                <p style={{ marginTop: '10px' }}>Quer ter certeza absoluta? <a href={`${config.whatsappLink}&text=Olá,%20gostaria%20de%20saber%20se%20aceitam%20meu%20plano.`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Envie uma foto da sua carteirinha no WhatsApp</a> e nossa equipe verifica a cobertura na hora para você.</p>
+                <p style={{ marginTop: '10px' }}>Quer ter certeza absoluta? <a href={`${config.whatsappLink}&text=Olá,%20gostaria%20de%20saber%20se%20aceitam%20meu%20plano.`} target="_blank" rel="noopener noreferrer" aria-label="Enviar foto da carteirinha pelo WhatsApp para consultar cobertura" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Envie uma foto da sua carteirinha no WhatsApp</a> e nossa equipe verifica a cobertura na hora para você.</p>
             </>
         )
     },
@@ -21,7 +21,7 @@ const faqItems = [
         answer: (
             <>
                 <p><strong>Sim!</strong> Esse é um dos nossos diferenciais. Levamos o equipamento até sua residência, instalamos e buscamos no dia seguinte.</p>
-                <p>É a opção ideal para idosos, pessoas com mobilidade reduzida ou para quem quer mais conforto. <a href={`${config.whatsappLink}&text=Tenho%20interesse%20no%20exame%20domiciliar.`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Verifique a disponibilidade para seu bairro aqui.</a></p>
+                <p>É a opção ideal para idosos, pessoas com mobilidade reduzida ou para quem quer mais conforto. <a href={`${config.whatsappLink}&text=Tenho%20interesse%20no%20exame%20domiciliar.`} target="_blank" rel="noopener noreferrer" aria-label="Verificar disponibilidade de exame domiciliar por bairro no WhatsApp" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Verifique a disponibilidade para seu bairro aqui.</a></p>
             </>
         )
     },
@@ -44,10 +44,10 @@ const faqItems = [
 
 export default function Faq() {
   return (
-    <section id="faq" className="py-20 bg-slate-50">
+    <section id="faq" aria-labelledby="faq-title" className="py-12 md:py-20 bg-slate-50">
         <div className="container mx-auto px-5" style={{ maxWidth: '800px' }}>
             <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                <h2 className="text-3xl font-extrabold text-[#0b2447] mb-2">Dúvidas Frequentes sobre Exames do Sono</h2>
+                <h2 id="faq-title" className="text-3xl font-extrabold text-[#0b2447] mb-2">Dúvidas Frequentes sobre Exames do Sono</h2>
                 <p className="text-slate-500 text-sm sm:text-base leading-relaxed">Tire suas principais dúvidas sobre a realização de polissonografia, eletroencefalograma, convênios aceitos e exames domiciliares em Belo Horizonte.</p>
             </div>
 

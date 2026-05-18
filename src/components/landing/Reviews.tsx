@@ -83,7 +83,7 @@ export default function Reviews() {
   }, [emblaApi, isHovered]);
 
   return (
-    <section id="avaliacoes" className="bg-slate-50/70 py-16 border-b border-slate-100 overflow-hidden">
+    <section id="avaliacoes" className="bg-slate-50/70 py-12 md:py-16 border-b border-slate-100 overflow-hidden">
       <div className="container mx-auto px-5 max-w-6xl">
         
         {/* Header Block with Arrows */}

@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function Header() {
   return (
     <header>
-      <div className="navbar">
+      <div className="navbar justify-center">
         <Link href="#" className="logo">
           <Image 
             src="/images/logo-instituto-do-sono.png" 
@@ -17,7 +17,7 @@ export default function Header() {
           />
         </Link>
         
-        {/* Navigation Links in Center */}
+        {/* Navigation Links - Desktop only */}
         <nav className="hidden lg:flex items-center gap-8">
           <a href="#" className="text-sm font-bold text-[#0b2447] hover:text-[#2563eb] transition-colors uppercase tracking-wider">
             Início
@@ -35,10 +35,6 @@ export default function Header() {
             Localização
           </a>
         </nav>
-
-        <a href={config.whatsappLink} className="btn btn-primary" style={{ padding: '10px 24px', fontSize: '0.9rem' }}>
-          <WhatsAppIcon className="h-5 w-5 fill-white" /> Agendar Agora
-        </a>
       </div>
     </header>
   );

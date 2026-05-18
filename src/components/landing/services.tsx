@@ -1,7 +1,5 @@
 'use client';
-import React, { useCallback, useState, useEffect } from 'react';
-import useEmblaCarousel from 'embla-carousel-react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
 import Image from 'next/image';
 import { config } from '@/lib/config';
 import { WhatsAppIcon } from '../icons';
@@ -40,95 +38,46 @@ const exams = [
 ];
 
 export default function Services() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    emblaApi.on('select', onSelect);
-    onSelect();
-  }, [emblaApi, onSelect]);
-
-  // Autoplay Effect (Exames passam sozinhos, pausa se passar o mouse)
-  useEffect(() => {
-    if (!emblaApi || isHovered) return;
-    const interval = setInterval(() => {
-      emblaApi.scrollNext();
-    }, 4000); // 4 segundos por slide
-
-    return () => clearInterval(interval);
-  }, [emblaApi, isHovered]);
-
   return (
-    <section id="servicos" className="services-carousel-section">
+    <section id="servicos" aria-labelledby="services-title" className="services-carousel-section">
       <div className="container">
-        <h2 className="carousel-title">Nossos Exames de Sono e Neurologia</h2>
-        <p className="text-slate-300 text-center max-w-2xl mx-auto mb-10 -mt-2 text-sm sm:text-base leading-relaxed">
+        <h2 id="services-title" className="carousel-title">Nossos Exames de Sono e Neurologia</h2>
+        <p className="text-slate-500 text-center max-w-2xl mx-auto mb-10 -mt-2 text-sm sm:text-base leading-relaxed">
           Diagnósticos precisos e laudos médicos ágeis realizados por neurologistas e neurofisiologistas renomados em Belo Horizonte.
         </p>
         
-        <div 
-          className="carousel-wrapper"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <button className="carousel-btn prev-btn" onClick={scrollPrev}>
-            <ChevronLeft size={30} />
-          </button>
-
-          <div className="embla" ref={emblaRef}>
-            <div className="embla__container">
-              {exams.map((exam, index) => (
-                <div className="embla__slide" key={index}>
-                  <div className="exam-card">
-                    <div className="exam-img-wrapper">
-                      <Image 
-                        src={exam.image} 
-                        alt={exam.title}
-                        fill
-                        unoptimized
-                        className="exam-img"
-                      />
-                    </div>
-                    <div className="exam-content">
-                      <h3>{exam.title}</h3>
-                      <p>{exam.description}</p>
-                      <a 
-                        href={config.whatsappLink} 
-                        className="mt-5 w-full h-[44px] bg-[#25D366] hover:bg-[#1ebc57] text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:scale-[1.02] shadow-sm hover:shadow-md"
-                      >
-                        <WhatsAppIcon className="h-4 w-4" /> Agendar no WhatsApp
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <button className="carousel-btn next-btn" onClick={scrollNext}>
-            <ChevronRight size={30} />
-          </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {exams.map((exam, index) => (
+            <article className="exam-card" key={index}>
+              <div className="exam-img-wrapper">
+                <Image 
+                  src={exam.image} 
+                  alt={`Imagem do exame: ${exam.title}`}
+                  fill
+                  unoptimized
+                  className="exam-img"
+                />
+              </div>
+              <div className="exam-content flex flex-col flex-grow text-left">
+                <h3 className="mb-2">{exam.title}</h3>
+                <p className="mb-4">{exam.description}</p>
+                <a 
+                  href={config.whatsappLink} 
+                  aria-label={`Agendar ${exam.title} pelo WhatsApp`}
+                  className="mt-auto w-full h-[44px] bg-[#25D366] hover:bg-[#1ebc57] text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:scale-[1.02] shadow-sm hover:shadow-md"
+                >
+                  <WhatsAppIcon className="h-4 w-4" aria-hidden="true" /> Agendar no WhatsApp
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
 
-        <div className="carousel-pagination">
-          {selectedIndex + 1} / {exams.length}
-        </div>
-
-        <div className="carousel-actions mt-12">
-          <a href={config.whatsappLink} className="btn btn-primary w-full sm:w-[260px] h-[56px] flex items-center justify-center">
-            <WhatsAppIcon className="h-5 w-5 mr-2" /> Agendar Exame
+        <div className="carousel-actions mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
+          <a href={config.whatsappLink} aria-label="Agendar qualquer exame pelo WhatsApp" className="btn btn-primary w-full sm:w-[260px] h-[56px] flex items-center justify-center">
+            <WhatsAppIcon className="h-5 w-5 mr-2" aria-hidden="true" /> Agendar Exame
           </a>
-          <a href="#localizacao" className="btn w-full sm:w-[260px] h-[56px] border-2 border-white/30 text-white bg-transparent hover:bg-white/10 hover:border-white transition-all duration-300 flex items-center justify-center">
+          <a href="#localizacao" aria-label="Ver como chegar à clínica" className="btn w-full sm:w-[260px] h-[56px] border-2 border-[#0b2447]/20 text-[#0b2447] bg-transparent hover:bg-[#0b2447]/5 hover:border-[#0b2447] transition-all duration-300 flex items-center justify-center">
             Como chegar?
           </a>
         </div>

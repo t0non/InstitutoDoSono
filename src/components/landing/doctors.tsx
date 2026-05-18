@@ -29,14 +29,14 @@ const doctors = [
 
 export default function Doctors() {
   return (
-    <section id="corpo-clinico" className="py-20 bg-slate-50/50 border-t border-b border-slate-100">
+    <section id="corpo-clinico" aria-labelledby="doctors-title" className="py-12 md:py-20 bg-slate-50/50 border-t border-b border-slate-100">
       <div className="container">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
           <span className="px-4 py-1.5 text-xs font-bold text-[#2563eb] bg-blue-50 border border-blue-100 rounded-full uppercase tracking-wider">
             Corpo Clínico
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#0b2447] mt-4 mb-4">
+          <h2 id="doctors-title" className="text-3xl md:text-4xl font-extrabold text-[#0b2447] mt-4 mb-4">
             Especialistas de Referência em Neurologia e Sono
           </h2>
           <p className="text-slate-500 text-base">
@@ -47,14 +47,14 @@ export default function Doctors() {
         {/* Doctors Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto px-4">
           {doctors.map((doctor, index) => (
-            <div 
+            <article 
               key={doctor.crm} 
               className="group flex flex-col bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 border border-slate-100" 
               data-aos="fade-up" 
               data-aos-delay={index * 150}
             >
               {/* Doctor Photo Section */}
-              <div className="relative w-full h-[360px] sm:h-[400px] overflow-hidden bg-slate-100">
+              <div className="relative w-full h-[290px] sm:h-[360px] overflow-hidden bg-slate-100">
                 <Image 
                   src={doctor.imageUrl} 
                   alt={doctor.alt} 
@@ -71,7 +71,7 @@ export default function Doctors() {
               </div>
               
               {/* Doctor Details Section */}
-              <div className="p-8 flex flex-col flex-grow">
+              <div className="p-6 sm:p-8 flex flex-col flex-grow">
                 <h3 className="text-2xl font-extrabold text-[#0b2447] mb-1 tracking-tight">
                   {doctor.name}
                 </h3>
@@ -84,12 +84,12 @@ export default function Doctors() {
                 </div>
                 
                 {/* Biography */}
-                <p className="text-sm text-slate-500 leading-relaxed mb-6 flex-grow">
+                <p className="text-sm text-slate-500 leading-relaxed mb-4 sm:mb-6 flex-grow">
                   {doctor.bio}
                 </p>
                 
                 {/* Core Focus Pills */}
-                <div className="border-t border-slate-100 pt-4 mb-6">
+                <div className="border-t border-slate-100 pt-4 mb-4 sm:mb-6">
                   <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2.5">
                     Focos de Atendimento
                   </span>
@@ -110,6 +110,7 @@ export default function Doctors() {
                   href={doctor.wppLink} 
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`Agendar consulta com ${doctor.name} pelo WhatsApp`}
                   className="w-full py-3.5 px-4 bg-[#25D366] hover:bg-[#1ebc57] text-white border border-transparent font-bold rounded-xl text-center text-sm transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-sm hover:shadow-md hover:scale-[1.01]"
                 >
                   <WhatsAppIcon 
@@ -118,7 +119,7 @@ export default function Doctors() {
                   <span>Agendar Consulta</span>
                 </a>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>

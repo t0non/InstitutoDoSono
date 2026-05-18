@@ -10,13 +10,11 @@ import Insurance from '@/components/landing/Insurance';
 import Reviews from '@/components/landing/Reviews';
 import MobileStickyBar from '@/components/landing/MobileStickyBar';
 import Faq from '@/components/landing/Faq';
-import TopStatusBar from '@/components/landing/TopStatusBar';
 import Location from '@/components/landing/location';
 
 export default function Home() {
   return (
     <>
-      <TopStatusBar />
       <Header />
       <main>
         <Hero />

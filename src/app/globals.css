@@ -8,6 +8,10 @@
     --text-light: #64748b;    /* Texto Cinza */
     --white: #ffffff;
     --light-bg: #f1f5f9;
+    /* Padronização de espaçamentos */
+    --section-py: 80px;
+    --section-py-mobile: 50px;
+    --section-gap: 40px;
 }
 
 @tailwind base;
@@ -21,11 +25,18 @@ body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: var(--text);
     background-color: var(--white);
-    line-height: 1.6;
+    line-height: 1.7;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3 { font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+/* Tipografia padronizada */
+h1 { font-weight: 800; color: var(--primary); letter-spacing: -0.5px; font-size: 2.5rem; line-height: 1.2; }
+h2 { font-weight: 800; color: var(--primary); letter-spacing: -0.3px; font-size: 2rem; line-height: 1.25; }
+h3 { font-weight: 700; color: var(--primary); letter-spacing: -0.2px; font-size: 1.5rem; line-height: 1.3; }
+p { font-size: 1rem; line-height: 1.7; color: var(--text-light); }
+strong { color: var(--text); font-weight: 700; }
 a { text-decoration: none; transition: 0.3s; }
 
 
@@ -156,12 +167,12 @@ header {
     height: 100%;
     z-index: 0;
     object-fit: cover;
-    filter: brightness(0.7);
+    filter: brightness(0.85); /* Increased brightness */
 }
 .hero-overlay {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to top, rgba(11, 36, 71, 0.85) 0%, rgba(11, 36, 71, 0.4) 100%);
+    background: linear-gradient(to top, rgba(11, 36, 71, 0.5) 0%, rgba(11, 36, 71, 0.15) 100%); /* Reduced opacity */
     z-index: 1;
 }
 .hero-grid { 
@@ -190,11 +201,15 @@ header {
 }
 .hero-text p { 
     font-size: 1.15rem; 
-    color: rgba(255,255,255,0.9); 
     margin-bottom: 35px; 
-    max-width: 600px;
+    color: var(--white); /* Forcing white text */
+    text-shadow: 0 1px 10px rgba(0,0,0,0.3);
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+}
+.hero-text p strong {
+    color: var(--white);
 }
 .hero-img { display: none; }
 
@@ -251,15 +266,16 @@ header {
 
 /* --- 5. SERVICES CAROUSEL --- */
 .services-carousel-section {
-    background-color: var(--primary);
+    background-color: #ffffff;
     padding: 80px 0;
-    color: var(--white);
+    color: #0b2447;
     text-align: center;
 }
 .carousel-title {
     font-size: 2.5rem;
-    color: var(--white);
-    margin-bottom: 50px;
+    color: #0b2447;
+    margin-bottom: 40px;
+    font-weight: 800;
 }
 .carousel-wrapper {
     display: flex;
@@ -267,7 +283,7 @@ header {
     justify-content: center;
     gap: 20px;
     position: relative;
-    max-width: 1100px;
+    max-width: 1300px;
     margin: 0 auto;
 }
 .embla {
@@ -278,34 +294,39 @@ header {
     display: flex;
 }
 .embla__slide {
-    flex: 0 0 50%;
+    flex: 0 0 33.333%;
     min-width: 0;
     padding: 0 15px;
 }
 .exam-card {
     background-color: var(--white);
     color: var(--text);
-    border-radius: 24px;
-    padding: 30px;
+    border-radius: 0px;
+    padding: 24px;
     height: 100%;
+    min-height: 450px;
     display: flex;
     flex-direction: column;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-    border: 1px solid #f1f5f9;
+    text-align: left;
+    box-shadow: 0 15px 35px rgba(11,36,71,0.05);
+    border: 1px solid rgba(11,36,71,0.08);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .exam-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(11,36,71,0.1);
+    border-color: rgba(11,36,71,0.15);
 }
 .exam-img-wrapper {
     position: relative;
-    width: 100%;
-    height: 250px;
-    border-radius: 12px;
+    width: calc(100% + 48px); /* bleed past card padding */
+    margin-left: -24px;
+    margin-right: -24px;
+    margin-top: -24px;
+    height: 220px;
+    border-radius: 0px;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 .exam-img {
     object-fit: cover;
@@ -317,13 +338,16 @@ header {
 }
 .exam-content h3 {
     font-size: 1.4rem;
-    margin-bottom: 15px;
-    color: var(--primary);
+    margin-bottom: 10px;
+    line-height: 1.3;
+    font-weight: 800;
+    color: #0b2447;
 }
 .exam-content p {
-    font-size: 0.95rem;
-    color: var(--text-light);
-    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #64748b;
+    line-height: 1.45;
+    margin-bottom: 15px;
     flex-grow: 1;
 }
 .saiba-mais-link {
@@ -335,7 +359,7 @@ header {
 .carousel-btn {
     background: transparent;
     border: none;
-    color: white;
+    color: #0b2447;
     cursor: pointer;
     transition: 0.3s;
     opacity: 0.7;
@@ -398,6 +422,7 @@ header {
 .history-section {
     background: var(--light-bg);
     padding: 80px 0;
+    overflow-x: hidden; /* Prevent horizontal scroll caused by inner elements */
 }
 .history-grid {
     display: grid;
@@ -581,14 +606,20 @@ header {
         gap: 40px;
     }
     .history-text {
-        text-align: center;
+        text-align: left;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
     .history-images {
         margin-top: 30px;
         min-height: 350px;
     }
     .category-header {
-      justify-content: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+    .embla__slide {
+        flex: 0 0 50%; /* Show 2 slides on tablets */
     }
 }
 
@@ -598,13 +629,14 @@ header {
         padding-bottom: 75px; /* Space for sticky bar */
     }
     .navbar {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px 20px;
+        flex-direction: row;
+        justify-content: center;
+        padding: 8px 15px;
+        gap: 0;
     }
     .hero {
-        padding-top: 180px; /* More space for stacked header */
-        padding-bottom: 100px;
+        padding-top: 90px;
+        padding-bottom: 60px;
         min-height: 0;
     }
     .hero-grid { 
@@ -625,7 +657,8 @@ header {
         gap: 20px;
     }
     .embla__slide {
-        flex: 0 0 100%; /* Show 1 slide on mobile */
+        flex: 0 0 100%;
+        padding: 0 5px;
     }
     .selector-grid { 
         grid-template-columns: 1fr; 
@@ -645,7 +678,50 @@ header {
     }
 
     #smart-chat-widget {
-        bottom: 90px;
+        display: none !important;
+    }
+    .services-carousel-section {
+        padding: 50px 0;
+    }
+    .carousel-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+    .exam-card {
+        padding: 22px 20px;
+        border-radius: 0px;
+        height: 100%;
+        min-height: 480px;
+        box-shadow: 0 10px 25px rgba(11,36,71,0.04);
+        border: 1px solid rgba(11,36,71,0.08);
+    }
+    .exam-img-wrapper {
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        margin-right: -20px;
+        margin-top: -22px;
+        height: 210px;
+        margin-bottom: 16px;
+        border-radius: 0px;
+    }
+    .exam-content h3 {
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+    }
+    .exam-content p {
+        font-size: 0.78rem;
+        margin-bottom: 12px;
+    }
+    .carousel-actions {
+        margin-top: 25px;
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .carousel-actions .btn {
+        width: 100% !important;
+        max-width: 280px;
     }
     
     .mobile-sticky-bar {
@@ -691,20 +767,27 @@ header {
 @media(max-width: 480px) {
     /* Small phones */
     body {
-        font-size: 15px; /* Slightly smaller base font for readability */
+        font-size: 15px;
     }
     .hero-text h1 {
-        font-size: 2rem;
+        font-size: 1.85rem;
     }
     h2 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+    }
+    h3 {
+        font-size: 1.25rem;
+    }
+    p {
+        font-size: 0.92rem;
     }
     .btn {
         padding: 14px 28px;
         font-size: 0.9rem;
     }
     .container {
-        padding: 0 15px;
+        padding: 0 20px;
+        overflow-x: hidden;
     }
     .services-section, .steps-section {
         padding: 60px 0;
@@ -713,15 +796,7 @@ header {
         padding: 40px 25px;
         margin: 40px 0;
     }
-    #smart-chat-widget {
-        right: 15px;
-        bottom: 85px; /* readusted */
-    }
-    .chat-window { 
-        width: calc(100vw - 30px);
-        right: 0;
-        bottom: 75px;
-    }
+
     .float-container {
         right: 15px;
         bottom: 15px;
@@ -745,6 +820,18 @@ header {
         right: auto;
         bottom: auto;
         border: none;
+    }
+    .history-section {
+        padding: 50px 0;
+    }
+    .history-text h3 {
+        font-size: 1.3rem;
+        line-height: 1.35;
+        word-break: break-word;
+    }
+    .history-text p {
+        font-size: 0.9rem;
+        line-height: 1.65;
     }
 
     .mobile-sticky-bar {
