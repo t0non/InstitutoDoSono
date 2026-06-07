@@ -9,7 +9,8 @@ const doctors = [
     name: 'Dr. Welser Machado',
     specialty: 'Neurologista e Médico do Sono',
     bio: 'Pioneiro e referência em medicina do sono em Minas Gerais. Mais de 30 anos de atuação especializada no diagnóstico e tratamento de distúrbios neurológicos e respiratórios do sono.',
-    imageUrl: 'https://files.catbox.moe/jws4gt.jpg',
+    imageUrl: '/images/welser.jpeg',
+    imageClass: 'object-cover object-center',
     crm: 'CRM 5623',
     focus: ['Polissonografia', 'Apneia do Sono', 'Insônia', 'Ronco e Roncopatia'],
     wppLink: `${config.whatsappLink}&text=Olá,%20gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Welser%20Machado.`,
@@ -20,10 +21,22 @@ const doctors = [
     specialty: 'Epileptologista e Neurofisiologista',
     bio: 'Mestre em Neurofisiologia pela UFMG. Especialista com ampla trajetória em epilepsia refratária, eletroencefalograma de alta resolução e acompanhamento especializado adulto e pediátrico.',
     imageUrl: 'https://files.catbox.moe/h7slz7.jpg',
+    imageClass: 'object-cover object-top',
     crm: 'CRM 32374',
     focus: ['Epilepsia Geral e Infantil', 'Eletroencefalograma (EEG)', 'Mapeamento Cerebral', 'Neurofisiologia Clínica'],
     wppLink: `${config.whatsappLink}&text=Olá,%20gostaria%20de%20agendar%20uma%20consulta%20com%20a%20Dra.%20Andrea%20Julião.`,
     alt: 'Dra. Andrea Julião - Especialista em Epilepsia e Neurofisiologia em MG',
+  },
+  {
+    name: 'Dra. Aila Fonseca',
+    specialty: 'Psicóloga e Neuropsicóloga',
+    bio: 'Neuropsicóloga no NATE do Hospital Felício Rocho e Mestra pela UFMG. Especialista com treinamento internacional (França) em Mapeamento Funcional do Cérebro para Neurocirurgia Oncológica.',
+    imageUrl: '/images/AILA.jpeg',
+    imageClass: 'object-cover object-center',
+    crm: 'Neuropsicologia',
+    focus: ['Avaliação Neuropsicológica', 'Mapeamento Funcional do Cérebro', 'Psicologia Hospitalar', 'Epilepsias'],
+    wppLink: `${config.whatsappLink}&text=Olá,%20gostaria%20de%20agendar%20uma%20consulta%20com%20a%20Dra.%20Aila%20Fonseca.`,
+    alt: 'Dra. Aila Fonseca - Psicóloga e Neuropsicóloga em MG',
   },
 ];
 
@@ -45,7 +58,7 @@ export default function Doctors() {
         </div>
         
         {/* Doctors Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
           {doctors.map((doctor, index) => (
             <article 
               key={doctor.crm} 
@@ -61,7 +74,7 @@ export default function Doctors() {
                   fill 
                   sizes="(max-width: 768px) 100vw, 50vw"
                   unoptimized
-                  className="object-cover object-top transition-transform duration-500 group-hover:scale-105" 
+                  className={`${doctor.imageClass || 'object-cover object-top'} transition-transform duration-500 group-hover:scale-105`} 
                 />
                 
                 {/* CRM Badge */}
