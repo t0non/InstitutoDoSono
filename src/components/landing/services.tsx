@@ -32,8 +32,9 @@ const exams = [
   },
   {
     title: 'Potenciais Evocados Completos',
-    description: 'Diagnósticos das vias sensoriais através de exames de Potenciais Evocados P300, BERA (auditivo), Visual, Eletroretinografia, Gênito-Cortical e Somato-Sensitivo MMII e MMSS.',
+    description: 'Serviço realizado exclusivamente em domicílio. Diagnósticos das vias sensoriais através de exames de Potenciais Evocados P300, BERA (auditivo), Visual, Eletroretinografia, Gênito-Cortical e Somato-Sensitivo MMII e MMSS.',
     image: '/images/Potenciais Evocados Completos.jpg',
+    badge: 'Apenas Domiciliar',
   }
 ];
 
@@ -49,7 +50,13 @@ export default function Services() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {exams.map((exam, index) => (
             <article className="exam-card" key={index}>
-              <div className="exam-img-wrapper">
+              <div className="exam-img-wrapper relative">
+                {exam.badge && (
+                  <span className="absolute top-3 right-3 z-10 bg-[#2563eb] text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 uppercase tracking-wide">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                    {exam.badge}
+                  </span>
+                )}
                 <Image 
                   src={exam.image} 
                   alt={`Imagem do exame: ${exam.title}`}
