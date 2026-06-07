@@ -6,6 +6,12 @@ import { WhatsAppIcon } from '../icons';
 
 const exams = [
   {
+    title: 'Potenciais Evocados Completos',
+    description: 'Serviço realizado exclusivamente em domicílio. Diagnósticos das vias sensoriais através de exames de Potenciais Evocados P300, BERA (auditivo), Visual, Eletroretinografia, Gênito-Cortical e Somato-Sensitivo MMII e MMSS.',
+    image: '/images/Potenciais Evocados Completos.jpg',
+    badge: 'Apenas Domiciliar',
+  },
+  {
     title: 'Consultas Neurológicas Especializadas',
     description: 'Consultas neurológicas focadas no diagnóstico e tratamento clínico de Distúrbios do Sono, Ronco Crônico, Enxaqueca e Cefaleias, e Epilepsias.',
     image: '/images/escritorio (3).jpeg',
@@ -29,12 +35,6 @@ const exams = [
     title: 'Vídeo-Eletroencefalografia (VEEG)',
     description: 'Monitoramento contínuo em vídeo associado ao EEG para avaliação de crises convulsivas de difícil controle em crianças e adultos.',
     image: '/images/Vídeo-Eletroencefalografia (VEEG).png',
-  },
-  {
-    title: 'Potenciais Evocados Completos',
-    description: 'Serviço realizado exclusivamente em domicílio. Diagnósticos das vias sensoriais através de exames de Potenciais Evocados P300, BERA (auditivo), Visual, Eletroretinografia, Gênito-Cortical e Somato-Sensitivo MMII e MMSS.',
-    image: '/images/Potenciais Evocados Completos.jpg',
-    badge: 'Apenas Domiciliar',
   }
 ];
 
@@ -49,7 +49,10 @@ export default function Services() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {exams.map((exam, index) => (
-            <article className="exam-card" key={index}>
+            <article 
+              className={`exam-card ${exam.badge ? 'border-2 border-[#2563eb] shadow-[0_0_20px_rgba(37,99,235,0.15)] ring-4 ring-blue-50 relative z-10' : ''}`} 
+              key={index}
+            >
               <div className="exam-img-wrapper relative">
                 {exam.badge && (
                   <span className="absolute top-3 right-3 z-10 bg-[#2563eb] text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 uppercase tracking-wide">
