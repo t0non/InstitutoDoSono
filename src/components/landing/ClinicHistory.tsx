@@ -59,7 +59,7 @@ export default function ClinicHistory() {
               <li><strong>Tradição e Especialização:</strong> Mais de 30 anos de atuação com corpo clínico renomado e titulado.</li>
               <li><strong>Infraestrutura Completa em BH:</strong> Sede própria no <strong>Barro Preto</strong> projetada sob rígidos padrões de acessibilidade e conforto.</li>
               <li><strong>Suítes de Exames Padrão Hotel:</strong> Isolamento acústico, camas confortáveis e climatização para simular o seu lar.</li>
-              <li><strong>Diagnósticos Seguros e Indolores:</strong> Exames como a <strong>Polissonografia (clínica e domiciliar)</strong> e o <strong>Eletroencefalograma (EEG)</strong> ocorrem de forma 100% natural, essenciais para o diagnóstico de ronco, apneia e insônia.</li>
+              <li><strong>Diagnósticos Seguros e Indolores:</strong> Exames como a <strong>Polissonografia (clínica e domiciliar)</strong>, o <strong>Eletroencefalograma (EEG)</strong> e <strong>Potenciais Evocados</strong> ocorrem de forma 100% natural, essenciais para diagnósticos precisos.</li>
             </ul>
           </div>
           
