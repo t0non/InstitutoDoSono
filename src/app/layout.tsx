@@ -146,13 +146,13 @@ export default function RootLayout({
           `}
         </Script>
         {/* Google tag (gtag.js) */}
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-YJVTYKS3TH" />
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-SCMS4QGP25" />
         <Script id="google-analytics">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-YJVTYKS3TH');
+            gtag('config', 'G-SCMS4QGP25');
           `}
         </Script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
