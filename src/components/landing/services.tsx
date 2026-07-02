@@ -7,9 +7,8 @@ import { WhatsAppIcon } from '../icons';
 const exams = [
   {
     title: 'Potenciais Evocados Completos',
-    description: 'Serviço realizado exclusivamente em domicílio. Diagnósticos das vias sensoriais através de exames de Potenciais Evocados P300, BERA (auditivo), Visual, Eletroretinografia, Gênito-Cortical e Somato-Sensitivo MMII e MMSS.',
+    description: 'Diagnósticos das vias sensoriais através de exames de Potenciais Evocados P300, BERA (auditivo), Visual, Eletroretinografia, Gênito-Cortical e Somato-Sensitivo MMII e MMSS.',
     image: '/images/Potenciais Evocados Completos.jpg',
-    badge: 'Apenas Domiciliar',
   },
   {
     title: 'Consultas Neurológicas Especializadas',
