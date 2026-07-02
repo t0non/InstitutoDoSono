@@ -12,6 +12,9 @@ export const config = {
   get whatsappLinkConsulta() {
     return `https://wa.me/${this.whatsappNumber}?text=Olá,%20gostaria%20de%20agendar%20um%20horário.`;
   },
+  get whatsappLinkInstagram() {
+    return `https://wa.me/${this.whatsappNumber}?text=Olá,%20vim%20pelo%20Instagram%20e%20gostaria%20de%20agendar%20um%20horário.`;
+  },
   phoneNumber: '(31) 9129-4704',
   email: 'sac@institutodosonobh.com.br',
   address: 'R. dos Aimorés, 3018 - Sala 704 - Barro Preto, Belo Horizonte - MG, 30140-073',
