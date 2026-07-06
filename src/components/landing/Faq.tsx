@@ -12,7 +12,7 @@ const faqItems = [
         answer: (
             <>
                 <p>Atendemos os principais planos como <strong>Unimed, Bradesco, SulAmérica, Amil, IPSM, Cassi</strong>, entre outros.</p>
-                <p style={{ marginTop: '10px' }}>Quer ter certeza absoluta? <a href={`${config.whatsappLink}&text=Olá,%20gostaria%20de%20saber%20se%20aceitam%20meu%20plano.`} target="_blank" rel="noopener noreferrer" aria-label="Enviar foto da carteirinha pelo WhatsApp para consultar cobertura" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Envie uma foto da sua carteirinha no WhatsApp</a> e nossa equipe verifica a cobertura na hora para você.</p>
+                <p style={{ marginTop: '10px' }}>Quer ter certeza absoluta? <a href={config.generateWhatsappLink('Olá, gostaria de saber se aceitam meu plano.')} target="_blank" rel="noopener noreferrer" aria-label="Enviar foto da carteirinha pelo WhatsApp para consultar cobertura" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Envie uma foto da sua carteirinha no WhatsApp</a> e nossa equipe verifica a cobertura na hora para você.</p>
             </>
         )
     },
@@ -21,7 +21,7 @@ const faqItems = [
         answer: (
             <>
                 <p><strong>Sim!</strong> Esse é um dos nossos diferenciais. Levamos o equipamento até sua residência, instalamos e buscamos no dia seguinte.</p>
-                <p>É a opção ideal para idosos, pessoas com mobilidade reduzida ou para quem quer mais conforto. <a href={`${config.whatsappLink}&text=Tenho%20interesse%20no%20exame%20domiciliar.`} target="_blank" rel="noopener noreferrer" aria-label="Verificar disponibilidade de exame domiciliar por bairro no WhatsApp" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Verifique a disponibilidade para seu bairro aqui.</a></p>
+                <p>É a opção ideal para idosos, pessoas com mobilidade reduzida ou para quem quer mais conforto. <a href={config.generateWhatsappLink('Olá, tenho interesse no exame domiciliar.')} target="_blank" rel="noopener noreferrer" aria-label="Verificar disponibilidade de exame domiciliar por bairro no WhatsApp" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Verifique a disponibilidade para seu bairro aqui.</a></p>
             </>
         )
     },

@@ -13,7 +13,7 @@ const doctors = [
     imageClass: 'object-cover object-center',
     crm: 'CRM 5623',
     focus: ['Polissonografia', 'Apneia do Sono', 'Insônia', 'Ronco e Roncopatia'],
-    wppLink: `${config.whatsappLink}&text=Olá,%20gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Welser%20Machado.`,
+    wppLink: config.generateWhatsappLink('Olá, gostaria de agendar uma consulta com o Dr. Welser Machado.'),
     alt: 'Dr. Welser Machado - Neurologista e Especialista em Medicina do Sono em MG',
   },
   {
@@ -24,7 +24,7 @@ const doctors = [
     imageClass: 'object-cover object-top',
     crm: 'CRM 32374',
     focus: ['Epilepsia Geral e Infantil', 'Eletroencefalograma (EEG)', 'Mapeamento Cerebral', 'Neurofisiologia Clínica'],
-    wppLink: `${config.whatsappLink}&text=Olá,%20gostaria%20de%20agendar%20uma%20consulta%20com%20a%20Dra.%20Andrea%20Julião.`,
+    wppLink: config.generateWhatsappLink('Olá, gostaria de agendar uma consulta com a Dra. Andrea Julião.'),
     alt: 'Dra. Andrea Julião - Especialista em Epilepsia e Neurofisiologia em MG',
   },
   {
@@ -35,7 +35,7 @@ const doctors = [
     imageClass: 'object-cover object-center',
     crm: 'Neuropsicologia',
     focus: ['Avaliação Neuropsicológica', 'Mapeamento Funcional do Cérebro', 'Psicologia Hospitalar', 'Epilepsias'],
-    wppLink: `${config.whatsappLink}&text=Olá,%20gostaria%20de%20agendar%20uma%20consulta%20com%20a%20Dra.%20Aila%20Fonseca.`,
+    wppLink: config.generateWhatsappLink('Olá, gostaria de agendar uma consulta com a Dra. Aila Fonseca.'),
     alt: 'Dra. Aila Fonseca - Psicóloga e Neuropsicóloga em MG',
   },
 ];
