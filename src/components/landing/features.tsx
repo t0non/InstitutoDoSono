@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
-import { Home, Award, Baby, Hospital } from 'lucide-react';
+import { useWhatsAppLinks } from '@/hooks/useWhatsAppLinks';
+import { Home, Brain, Activity, Clock, ShieldCheck, FileText } from 'lucide-react';
 import { config } from '@/lib/config';
 
 const featureItems = [
@@ -26,6 +29,8 @@ const featureItems = [
 ]
 
 export default function Features() {
+  const { whatsappLink } = useWhatsAppLinks();
+
   return (
     <section className="section-padding features">
       <div className="blob blob-1"></div>
@@ -40,7 +45,7 @@ export default function Features() {
           <p style={{ color: 'rgba(255,255,255,0.8)', marginBottom: '30px' }}>
             Não somos apenas uma clínica. Somos um centro de referência tecnológica em neurofisiologia. Entendemos que diagnósticos precisos exigem equipamentos de ponta e olhar humano.
           </p>
-          <Link href={config.whatsappLink} className="btn" style={{ background: 'var(--white-val)', color: 'var(--primary-val)' }}>
+          <Link href={whatsappLink} className="btn" style={{ background: 'var(--white-val)', color: 'var(--primary-val)' }}>
             Falar com Atendente
           </Link>
         </div>

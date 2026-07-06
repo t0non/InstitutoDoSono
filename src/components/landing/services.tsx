@@ -2,6 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { config } from '@/lib/config';
+import { useWhatsAppLinks } from '@/hooks/useWhatsAppLinks';
 import { WhatsAppIcon } from '../icons';
 
 const exams = [
@@ -38,6 +39,8 @@ const exams = [
 ];
 
 export default function Services() {
+  const { generateCustomLink } = useWhatsAppLinks();
+
   return (
     <section id="servicos" aria-labelledby="services-title" className="services-carousel-section">
       <div className="container">
@@ -71,7 +74,7 @@ export default function Services() {
                 <h3 className="mb-2">{exam.title}</h3>
                 <p className="mb-4">{exam.description}</p>
                 <a 
-                  href={config.generateWhatsappLink(`Olá, gostaria de agendar o exame: ${exam.title}`)} 
+                  href={generateCustomLink(`gostaria de agendar o exame: ${exam.title}`)} 
                   aria-label={`Agendar ${exam.title} pelo WhatsApp`}
                   className="mt-auto w-full h-[44px] bg-[#25D366] hover:bg-[#1ebc57] text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:scale-[1.02] shadow-sm hover:shadow-md"
                 >
@@ -83,7 +86,7 @@ export default function Services() {
         </div>
 
         <div className="carousel-actions mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
-          <a href={config.generateWhatsappLink('Olá, gostaria de agendar um exame.')} aria-label="Agendar qualquer exame pelo WhatsApp" className="btn btn-primary w-full sm:w-[260px] h-[56px] flex items-center justify-center">
+          <a href={generateCustomLink('gostaria de agendar um exame.')} aria-label="Agendar qualquer exame pelo WhatsApp" className="btn btn-primary w-full sm:w-[260px] h-[56px] flex items-center justify-center">
             <WhatsAppIcon className="h-5 w-5 mr-2" aria-hidden="true" /> Agendar Exame
           </a>
           <a href="#localizacao" aria-label="Ver como chegar à clínica" className="btn w-full sm:w-[260px] h-[56px] border-2 border-[#0b2447]/20 text-[#0b2447] bg-transparent hover:bg-[#0b2447]/5 hover:border-[#0b2447] transition-all duration-300 flex items-center justify-center">

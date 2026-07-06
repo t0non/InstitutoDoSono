@@ -1,3 +1,4 @@
+'use client';
 import {
   Accordion,
   AccordionContent,
@@ -5,14 +6,18 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { config } from "@/lib/config"
+import { useWhatsAppLinks } from '@/hooks/useWhatsAppLinks'
 
-const faqItems = [
+export default function Faq() {
+  const { generateCustomLink } = useWhatsAppLinks();
+
+  const faqItems = [
     {
         question: "Quais convênios vocês aceitam?",
         answer: (
             <>
                 <p>Atendemos os principais planos como <strong>Unimed, Bradesco, SulAmérica, Amil, IPSM, Cassi</strong>, entre outros.</p>
-                <p style={{ marginTop: '10px' }}>Quer ter certeza absoluta? <a href={config.generateWhatsappLink('Olá, gostaria de saber se aceitam meu plano.')} target="_blank" rel="noopener noreferrer" aria-label="Enviar foto da carteirinha pelo WhatsApp para consultar cobertura" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Envie uma foto da sua carteirinha no WhatsApp</a> e nossa equipe verifica a cobertura na hora para você.</p>
+                <p style={{ marginTop: '10px' }}>Quer ter certeza absoluta? <a href={generateCustomLink('gostaria de saber se aceitam meu plano.')} target="_blank" rel="noopener noreferrer" aria-label="Enviar foto da carteirinha pelo WhatsApp para consultar cobertura" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Envie uma foto da sua carteirinha no WhatsApp</a> e nossa equipe verifica a cobertura na hora para você.</p>
             </>
         )
     },
@@ -21,7 +26,7 @@ const faqItems = [
         answer: (
             <>
                 <p><strong>Sim!</strong> Esse é um dos nossos diferenciais. Levamos o equipamento até sua residência, instalamos e buscamos no dia seguinte.</p>
-                <p>É a opção ideal para idosos, pessoas com mobilidade reduzida ou para quem quer mais conforto. <a href={config.generateWhatsappLink('Olá, tenho interesse no exame domiciliar.')} target="_blank" rel="noopener noreferrer" aria-label="Verificar disponibilidade de exame domiciliar por bairro no WhatsApp" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Verifique a disponibilidade para seu bairro aqui.</a></p>
+                <p>É a opção ideal para idosos, pessoas com mobilidade reduzida ou para quem quer mais conforto. <a href={generateCustomLink('tenho interesse no exame domiciliar.')} target="_blank" rel="noopener noreferrer" aria-label="Verificar disponibilidade de exame domiciliar por bairro no WhatsApp" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Verifique a disponibilidade para seu bairro aqui.</a></p>
             </>
         )
     },
@@ -39,10 +44,8 @@ const faqItems = [
         question: "O exame em crianças dói ou incomoda?",
         answer: <p>Fique tranquilo(a). Todos os nossos exames (Polissonografia, EEG) são <strong>indolores e não invasivos</strong> (sem agulhas). Nossa equipe é treinada para deixar a criança super confortável e segura.</p>
     }
-]
+  ];
 
-
-export default function Faq() {
   return (
     <section id="faq" aria-labelledby="faq-title" className="py-12 md:py-20 bg-white">
         <div className="container mx-auto px-5" style={{ maxWidth: '800px' }}>

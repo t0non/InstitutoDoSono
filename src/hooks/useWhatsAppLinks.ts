@@ -1,44 +1,55 @@
 'use client';
+import { useEffect, useState, useCallback } from 'react';
+import { config } from '@/lib/config';
 
-import { useState, useEffect } from 'react';
-
-const BASE_URL = 'https://wa.me/553191294704?text=';
-
-interface WhatsAppLinks {
+interface WhatsAppLinksState {
   whatsappLink: string;
   whatsappLinkInfo: string;
   whatsappLinkConsulta: string;
+  whatsappLinkUrgent: string;
+  whatsappLinkInstagram: string;
+  isGoogleAds: boolean;
 }
 
-const DEFAULT_LINKS: WhatsAppLinks = {
-  whatsappLink: `${BASE_URL}${encodeURIComponent('Olá! Vim do site e gostaria de agendar um exame ou consulta.')}`,
-  whatsappLinkInfo: `${BASE_URL}${encodeURIComponent('Olá! Vim do site e gostaria de informações.')}`,
-  whatsappLinkConsulta: `${BASE_URL}${encodeURIComponent('Olá! Vim do site e gostaria de agendar um horário.')}`,
-};
-
-const PAID_LINKS: WhatsAppLinks = {
-  whatsappLink: `${BASE_URL}${encodeURIComponent('Olá! Vi o anúncio no Google e gostaria de agendar um exame ou consulta.')}`,
-  whatsappLinkInfo: `${BASE_URL}${encodeURIComponent('Olá! Vi o anúncio no Google e gostaria de informações.')}`,
-  whatsappLinkConsulta: `${BASE_URL}${encodeURIComponent('Olá! Vi o anúncio no Google e gostaria de agendar um horário.')}`,
-};
-
 export function useWhatsAppLinks() {
-  const [links, setLinks] = useState<WhatsAppLinks>(DEFAULT_LINKS);
+  const [state, setState] = useState<WhatsAppLinksState>({
+    whatsappLink: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Olá! Vim do site e gostaria de agendar um exame ou consulta.')}`,
+    whatsappLinkInfo: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Olá! Vim do site e gostaria de informações.')}`,
+    whatsappLinkConsulta: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Olá! Vim do site e gostaria de agendar um horário.')}`,
+    whatsappLinkUrgent: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Preciso de atendimento domiciliar')}`,
+    whatsappLinkInstagram: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Olá, vim pelo Instagram e gostaria de agendar um horário.')}`,
+    isGoogleAds: false,
+  });
 
   useEffect(() => {
-    try {
+    if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
-      const gclid = urlParams.get('gclid');
-      const utmSource = urlParams.get('utm_source')?.toLowerCase();
+      const isAds = urlParams.has('gclid') || urlParams.get('utm_source')?.toLowerCase() === 'google';
 
-      // Condição de tráfego pago
-      if (gclid || utmSource === 'google') {
-        setLinks(PAID_LINKS);
+      if (isAds) {
+        setState({
+          whatsappLink: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Olá! Vi o anúncio no Google e gostaria de agendar um exame ou consulta.')}`,
+          whatsappLinkInfo: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Olá! Vi o anúncio no Google e gostaria de informações.')}`,
+          whatsappLinkConsulta: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Olá! Vi o anúncio no Google e gostaria de agendar um horário.')}`,
+          whatsappLinkUrgent: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Preciso de atendimento domiciliar')}`,
+          whatsappLinkInstagram: `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent('Olá, vim pelo Instagram e gostaria de agendar um horário.')}`,
+          isGoogleAds: true,
+        });
       }
-    } catch (e) {
-      console.error('Erro ao ler a origem do tráfego para links do WhatsApp:', e);
     }
   }, []);
 
-  return links;
+  const generateCustomLink = useCallback((customMessage: string) => {
+    const prefix = state.isGoogleAds 
+      ? 'Olá! Vi o anúncio no Google e ' 
+      : 'Olá! Vim do site e ';
+      
+    const finalMessage = `${prefix}${customMessage}`;
+    return `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(finalMessage)}`;
+  }, [state.isGoogleAds]);
+
+  return {
+    ...state,
+    generateCustomLink
+  };
 }

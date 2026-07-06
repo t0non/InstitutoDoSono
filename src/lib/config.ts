@@ -1,65 +1,8 @@
 export const config = {
   whatsappNumber: '553191294704',
 
-  // Função auxiliar para identificar a origem (UTM ou Referrer) e ajustar o texto
-  getTrafficSourceText(defaultText: string) {
-    // Evita erros no Server-Side Rendering (SSR) do Next.js
-    if (typeof window === 'undefined') return defaultText;
-
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      const utmSource = urlParams.get('utm_source')?.toLowerCase() || urlParams.get('origem')?.toLowerCase();
-      
-      let sourceName = '';
-      
-      if (utmSource) {
-        if (utmSource.includes('google')) sourceName = 'Google';
-        else if (utmSource.includes('instagram') || utmSource.includes('ig')) sourceName = 'Instagram';
-        else if (utmSource.includes('facebook') || utmSource.includes('fb')) sourceName = 'Facebook';
-        else if (utmSource.includes('tiktok')) sourceName = 'TikTok';
-        else sourceName = utmSource.charAt(0).toUpperCase() + utmSource.slice(1);
-      } else {
-        const referrer = document.referrer.toLowerCase();
-        if (referrer.includes('google')) sourceName = 'Google';
-        else if (referrer.includes('instagram')) sourceName = 'Instagram';
-        else if (referrer.includes('facebook')) sourceName = 'Facebook';
-      }
-
-      if (sourceName) {
-        // Ajusta a frase se já tiver "vim pelo site"
-        if (defaultText.includes('vim pelo site')) {
-          return defaultText.replace('vim pelo site', `vim pelo ${sourceName}`);
-        }
-        // Ajusta a frase padrão
-        return `Olá, vim pelo ${sourceName} e ${defaultText.replace('Olá, ', '')}`;
-      }
-    } catch (e) {
-      console.error('Erro ao ler a origem do tráfego', e);
-    }
-
-    return defaultText;
-  },
-
-  // Novo método para gerar qualquer link customizado mantendo a inteligência de UTM
-  generateWhatsappLink(customMessage: string) {
-    const text = this.getTrafficSourceText(customMessage);
-    return `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(text)}`;
-  },
-
-  get whatsappLink() {
-    return this.generateWhatsappLink('Olá, gostaria de agendar um exame ou consulta.');
-  },
-  
   get whatsappLinkUrgent() {
-    return this.generateWhatsappLink('Olá, preciso de atendimento domiciliar para exames.');
-  },
-  
-  get whatsappLinkInfo() {
-    return this.generateWhatsappLink('Olá, vim pelo site e gostaria de tirar algumas dúvidas.');
-  },
-  
-  get whatsappLinkConsulta() {
-    return this.generateWhatsappLink('Olá, gostaria de agendar um horário para consulta.');
+    return `https://wa.me/${this.whatsappNumber}?text=Preciso%20de%20atendimento%20domiciliar`;
   },
   
   get whatsappLinkInstagram() {

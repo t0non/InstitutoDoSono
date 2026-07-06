@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { X, ArrowRight } from 'lucide-react';
 import { config } from '@/lib/config';
+import { useWhatsAppLinks } from '@/hooks/useWhatsAppLinks';
 import { WhatsAppIcon } from '../icons';
 
 const TypingIndicator = () => (
@@ -15,6 +16,7 @@ const TypingIndicator = () => (
 );
 
 const SmartChat = () => {
+  const { whatsappLinkConsulta } = useWhatsAppLinks();
   const [isOpen, setIsOpen] = useState(false);
   const [bubbles, setBubbles] = useState<
     { id: string; content: React.ReactNode; show: boolean }[]
@@ -129,7 +131,7 @@ const SmartChat = () => {
 
         <div className="chat-footer">
           <a
-            href={config.whatsappLinkConsulta}
+            href={whatsappLinkConsulta}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-whatsapp-chat"

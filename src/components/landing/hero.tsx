@@ -1,8 +1,11 @@
+'use client';
 import Link from 'next/link';
 import { config } from '@/lib/config';
 import { WhatsAppIcon } from '../icons';
+import { useWhatsAppLinks } from '@/hooks/useWhatsAppLinks';
 
 export default function Hero() {
+  const { whatsappLink } = useWhatsAppLinks();
   return (
     <header className="hero" aria-labelledby="hero-heading">
       <video
@@ -24,7 +27,7 @@ export default function Hero() {
             Clínica de referência em exames de <strong>Polissonografia (clínica e domiciliar)</strong>, <strong>Eletroencefalograma (EEG)</strong>, <strong>Potenciais Evocados</strong> e tratamento especializado de <strong>ronco e apneia obstrutiva do sono</strong> em BH.
           </p>
           <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <a href={config.whatsappLink} aria-label="Agendar Exame de Sono via WhatsApp" className="btn btn-primary w-full sm:w-[260px] h-[56px] flex items-center justify-center">
+            <a href={whatsappLink} aria-label="Agendar Exame de Sono via WhatsApp" className="btn btn-primary w-full sm:w-[260px] h-[56px] flex items-center justify-center">
               <WhatsAppIcon className="h-5 w-5 mr-2" /> Agendar Exame
             </a>
             <a href="#servicos" aria-label="Ver todos os exames disponíveis" className="btn btn-white w-full sm:w-[260px] h-[56px] flex items-center justify-center">

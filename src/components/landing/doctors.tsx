@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import { config } from '@/lib/config';
+import { useWhatsAppLinks } from '@/hooks/useWhatsAppLinks';
 import { WhatsAppIcon } from '../icons';
 
 const doctors = [
@@ -13,7 +13,7 @@ const doctors = [
     imageClass: 'object-cover object-center',
     crm: 'CRM 5623',
     focus: ['Polissonografia', 'Apneia do Sono', 'Insônia', 'Ronco e Roncopatia'],
-    wppLink: config.generateWhatsappLink('Olá, gostaria de agendar uma consulta com o Dr. Welser Machado.'),
+    customMessage: 'gostaria de agendar uma consulta com o Dr. Welser Machado.',
     alt: 'Dr. Welser Machado - Neurologista e Especialista em Medicina do Sono em MG',
   },
   {
@@ -24,7 +24,7 @@ const doctors = [
     imageClass: 'object-cover object-top',
     crm: 'CRM 32374',
     focus: ['Epilepsia Geral e Infantil', 'Eletroencefalograma (EEG)', 'Mapeamento Cerebral', 'Neurofisiologia Clínica'],
-    wppLink: config.generateWhatsappLink('Olá, gostaria de agendar uma consulta com a Dra. Andrea Julião.'),
+    customMessage: 'gostaria de agendar uma consulta com a Dra. Andrea Julião.',
     alt: 'Dra. Andrea Julião - Especialista em Epilepsia e Neurofisiologia em MG',
   },
   {
@@ -35,12 +35,14 @@ const doctors = [
     imageClass: 'object-cover object-center',
     crm: 'Neuropsicologia',
     focus: ['Avaliação Neuropsicológica', 'Mapeamento Funcional do Cérebro', 'Psicologia Hospitalar', 'Epilepsias'],
-    wppLink: config.generateWhatsappLink('Olá, gostaria de agendar uma consulta com a Dra. Aila Fonseca.'),
+    customMessage: 'gostaria de agendar uma consulta com a Dra. Aila Fonseca.',
     alt: 'Dra. Aila Fonseca - Psicóloga e Neuropsicóloga em MG',
   },
 ];
 
 export default function Doctors() {
+  const { generateCustomLink } = useWhatsAppLinks();
+
   return (
     <section id="corpo-clinico" aria-labelledby="doctors-title" className="py-12 md:py-20 bg-white border-t border-b border-slate-100">
       <div className="container">
@@ -120,7 +122,7 @@ export default function Doctors() {
                 
                 {/* CTA Booking Button */}
                 <a 
-                  href={doctor.wppLink} 
+                  href={generateCustomLink(doctor.customMessage)} 
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Agendar consulta com ${doctor.name} pelo WhatsApp`}

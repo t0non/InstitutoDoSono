@@ -2,9 +2,12 @@
 import React from 'react';
 import { Users, Stethoscope, MapPin, CheckCircle, ShieldCheck } from 'lucide-react';
 import { config } from '@/lib/config';
+import { useWhatsAppLinks } from '@/hooks/useWhatsAppLinks';
 import { WhatsAppIcon } from '../icons';
 
 export default function TrustSection() {
+  const { whatsappLink } = useWhatsAppLinks();
+
   return (
     <section className="py-12 md:py-20 bg-[#07162c] text-white relative overflow-hidden border-t border-b border-white/5">
       {/* Decorative Blur Elements */}
@@ -125,7 +128,9 @@ export default function TrustSection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 pt-8 border-t border-white/5">
             <a 
-              href={config.whatsappLink} 
+              href={whatsappLink} 
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn w-full sm:w-[280px] h-[56px] bg-[#3b82f6] hover:bg-[#2563eb] text-white border-none transition-all duration-300 flex items-center justify-center font-bold"
             >
               <WhatsAppIcon className="h-5 w-5 mr-2" /> Agende Conforme Encaminhamento
