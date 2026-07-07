@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Script from 'next/script';
-import { FloatingWhatsApp } from '@/components/landing/FloatingWhatsApp';
 
 export const metadata: Metadata = {
   title: 'Clínica do Sono em BH | Polissonografia e EEG',
@@ -171,26 +170,6 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-    (function(window, document, script) {
-        if (!window.tt) {
-            window.tt = window.tt || {};
-
-            var c = document.getElementsByTagName('head')[0];
-            var k = document.createElement('script');
-            k.async = 1;
-            k.src = script;
-            c.appendChild(k);
-        }
-
-        window.tt.accountCode = '5c1bae77-1340-481b-9d52-87c8681c5cda';
-
-    })(window, document, '//s.tintim.app/static/core/tintim-1.0.js');
-`
-          }}
-        />
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 
@@ -202,7 +181,6 @@ export default function RootLayout({
         </noscript>
         {children}
         <Toaster />
-        <FloatingWhatsApp />
       </body>
     </html>
   );
