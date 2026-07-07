@@ -2,11 +2,11 @@ export const config = {
   whatsappNumber: '553191294704',
 
   get whatsappLinkUrgent() {
-    return `https://wa.me/${this.whatsappNumber}?text=Preciso%20de%20atendimento%20domiciliar`;
+    return `https://tintim.link/whatsapp/5c1bae77-1340-481b-9d52-87c8681c5cda/a44c94e1-fcf9-4c8a-aaa1-600afb46af77`;
   },
   
   get whatsappLinkInstagram() {
-    return `https://wa.me/${this.whatsappNumber}?text=Olá,%20vim%20pelo%20Instagram%20e%20gostaria%20de%20agendar%20um%20horário.`;
+    return `https://tintim.link/whatsapp/5c1bae77-1340-481b-9d52-87c8681c5cda/a44c94e1-fcf9-4c8a-aaa1-600afb46af77`;
   },
   
   phoneNumber: '(31) 9129-4704',
