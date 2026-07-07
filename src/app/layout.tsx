@@ -4,12 +4,12 @@ import { Toaster } from '@/components/ui/toaster';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: 'Instituto do Sono MG | Polissonografia e Neurologia em Belo Horizonte',
-  description: 'Clínica especializada em distúrbios do sono em Belo Horizonte - MG. Realizamos exames de Polissonografia clínica e domiciliar, Eletroencefalograma (EEG) e tratamentos para apneia e ronco.',
+  title: 'Clínica do Sono em BH | Polissonografia e EEG',
+  description: 'Polissonografia clínica e domiciliar, EEG e atendimento especializado em medicina do sono no Barro Preto, BH. Mais de 30 anos de experiência. Agende seu exame.',
   keywords: ['polissonografia belo horizonte', 'clinica do sono bh', 'exame do sono belo horizonte', 'eletroencefalograma bh', 'neurologista especialista em sono bh', 'tratamento de apneia bh', 'polissonografia domiciliar bh', 'instituto do sono belo horizonte', 'medicina do sono mg'],
   openGraph: {
-    title: 'Instituto do Sono MG | Polissonografia e Neurologia em Belo Horizonte',
-    description: 'Clínica especializada em distúrbios do sono em Belo Horizonte - MG. Diagnósticos de alta precisão com Polissonografia e EEG.',
+    title: 'Clínica do Sono em BH | Polissonografia e EEG',
+    description: 'Polissonografia clínica e domiciliar, EEG e atendimento especializado em medicina do sono no Barro Preto, BH. Mais de 30 anos de experiência. Agende seu exame.',
     locale: 'pt_BR',
     type: 'website',
   },
