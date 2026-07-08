@@ -24,7 +24,8 @@ export function useWhatsAppLinks() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
-      const isAds = urlParams.has('gclid') || urlParams.get('utm_source')?.toLowerCase() === 'google';
+      // Forçado para falso para manter sempre o fluxo orgânico
+      const isAds = false;
 
       if (isAds) {
         setState({
