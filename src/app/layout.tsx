@@ -4,12 +4,12 @@ import { Toaster } from '@/components/ui/toaster';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: 'Clínica do Sono em BH | Polissonografia e EEG',
-  description: 'Polissonografia clínica e domiciliar, EEG e atendimento especializado em medicina do sono no Barro Preto, BH. Mais de 30 anos de experiência. Agende seu exame.',
+  title: 'Clínica do Sono em BH | Polissonografia e Eletroencefalograma (EEG)',
+  description: 'Polissonografia clínica e domiciliar, Eletroencefalograma (EEG) e atendimento especializado em medicina do sono no Barro Preto, BH. Mais de 30 anos de experiência. Agende seu exame.',
   keywords: ['polissonografia belo horizonte', 'clinica do sono bh', 'exame do sono belo horizonte', 'eletroencefalograma bh', 'neurologista especialista em sono bh', 'tratamento de apneia bh', 'polissonografia domiciliar bh', 'instituto do sono belo horizonte', 'medicina do sono mg'],
   openGraph: {
-    title: 'Clínica do Sono em BH | Polissonografia e EEG',
-    description: 'Polissonografia clínica e domiciliar, EEG e atendimento especializado em medicina do sono no Barro Preto, BH. Mais de 30 anos de experiência. Agende seu exame.',
+    title: 'Clínica do Sono em BH | Polissonografia e Eletroencefalograma (EEG)',
+    description: 'Polissonografia clínica e domiciliar, Eletroencefalograma (EEG) e atendimento especializado em medicina do sono no Barro Preto, BH. Mais de 30 anos de experiência. Agende seu exame.',
     locale: 'pt_BR',
     type: 'website',
   },
@@ -94,7 +94,7 @@ export default function RootLayout({
         "name": "Quais convênios vocês aceitam?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Atendemos os principais planos como Unimed, Bradesco, SulAmérica, Amil, IPSM, Cassi, entre outros. Envie uma foto da sua carteirinha no WhatsApp e nossa equipe verifica a cobertura na hora para você."
+          "text": "Atendemos os principais planos como Fiat, Usisaúde, Amil, Unimed, Casu, Cassi, Amagis e Libertas, entre outros. Aviso importante: O exame de polissonografia é realizado apenas na modalidade particular. Envie uma foto da sua carteirinha no WhatsApp e nossa equipe verifica a cobertura na hora para você."
         }
       },
       {

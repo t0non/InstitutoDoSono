@@ -89,10 +89,11 @@ const SmartChat = () => {
       <div className="chat-avatar-container" onClick={toggleChat}>
         <div className="avatar-circle">
           <Image
-            src="https://files.catbox.moe/j9y3vf.png"
+            src="/images/atendente_beth.webp"
             alt="Atendente Beth"
             width={65}
             height={65}
+            className="object-cover rounded-full"
           />
         </div>
         <div className="online-status" />
@@ -103,10 +104,11 @@ const SmartChat = () => {
           <div className="header-info">
             <div className="header-avatar">
               <Image
-                src="https://files.catbox.moe/j9y3vf.png"
+                src="/images/atendente_beth.webp"
                 alt="Atendente Beth"
                 width={40}
                 height={40}
+                className="object-cover rounded-full"
               />
               <div className="header-status" />
             </div>

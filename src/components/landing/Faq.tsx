@@ -16,8 +16,9 @@ export default function Faq() {
         question: "Quais convênios vocês aceitam?",
         answer: (
             <>
-                <p>Atendemos os principais planos como <strong>Unimed, Bradesco, SulAmérica, Amil, IPSM, Cassi</strong>, entre outros.</p>
-                <p style={{ marginTop: '10px' }}>Quer ter certeza absoluta? <a href={generateCustomLink('gostaria de saber se aceitam meu plano.')} target="_blank" rel="noopener noreferrer" aria-label="Enviar foto da carteirinha pelo WhatsApp para consultar cobertura" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Envie uma foto da sua carteirinha no WhatsApp</a> e nossa equipe verifica a cobertura na hora para você.</p>
+                <p>Atendemos os principais planos como <strong>Fiat, Usisaúde, Amil, Unimed, Casu, Cassi, Amagis e Libertas</strong>, entre outros.</p>
+                <p style={{ marginTop: '10px' }}><strong>Aviso importante:</strong> O exame de <strong>polissonografia</strong> é realizado apenas na modalidade particular.</p>
+                <p style={{ marginTop: '10px' }}>Quer ter certeza absoluta sobre outros procedimentos? <a href={generateCustomLink('gostaria de saber se aceitam meu plano.')} target="_blank" rel="noopener noreferrer" aria-label="Enviar foto da carteirinha pelo WhatsApp para consultar cobertura" style={{ color: 'var(--accent)', fontWeight: 'bold' }}>Envie uma foto da sua carteirinha no WhatsApp</a> e nossa equipe verifica a cobertura na hora para você.</p>
             </>
         )
     },
