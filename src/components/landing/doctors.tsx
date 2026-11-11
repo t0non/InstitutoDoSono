@@ -80,6 +80,7 @@ export default function Doctors() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Agendar consulta com ${doctor.name} pelo WhatsApp`}
+                  data-track={`Agendar consulta: ${doctor.name}`}
                   className="doctor-cta"
                 >
                   <WhatsAppIcon className="h-4 w-4" />

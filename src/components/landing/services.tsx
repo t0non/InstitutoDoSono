@@ -76,6 +76,7 @@ export default function Services() {
                 <a 
                   href={generateCustomLink(`gostaria de agendar o exame: ${exam.title}`)} 
                   aria-label={`Agendar ${exam.title} pelo WhatsApp`}
+                  data-track={`Agendar exame: ${exam.title}`}
                   className="mt-auto w-full h-[44px] bg-[#07457D] hover:bg-[#07457D] text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:scale-[1.02] shadow-sm hover:shadow-md"
                 >
                   <WhatsAppIcon className="h-4 w-4" aria-hidden="true" /> Agendar no WhatsApp
