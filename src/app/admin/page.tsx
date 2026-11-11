@@ -108,6 +108,8 @@ function Bars({ rows, label, value, format = n }: { rows: Row[]; label: (r: Row)
   );
 }
 
+type Visitor = { code: string; visits: number; visits_period: number; first_seen: string; last_seen: string; total_seconds: number; pageviews: number; whatsapp_visits: number; phone_clicks: number; city: string | null; device: string | null; first_source: string | null; name: string | null; phone: string | null; email: string | null };
+
 const pct = (a: number, b: number) => (b ? Math.round((a / b) * 1000) / 10 : 0);
 
 // Nome amigável das páginas
@@ -148,6 +150,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   let dash: Dash | null = null;
   let prev: Dash | null = null;
   let leads: Row[] = [];
+  let visitors: Visitor[] | null = null;
   let error = '';
   try {
     [dash, prev, leads] = await Promise.all([
@@ -157,6 +160,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     ]);
   } catch (e) {
     error = e instanceof Error ? e.message : String(e);
+  }
+
+  if (dash) {
+    try {
+      visitors = await sbRpc<Visitor[]>('admin_visitors', { p_from: period.from.toISOString(), p_to: period.to.toISOString(), p_include_test: includeTest });
+    } catch { visitors = null; } // ajuste 004 ainda não rodado
   }
 
   if (!dash) {
@@ -421,6 +430,40 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           <Bars rows={dash.os as unknown as Row[]} label={(r) => String(r.name)} value={(r) => Number(r.sessions)} />
         </section>
       </div>
+
+      <section className="adm-card">
+        <h2>Visitantes{visitors ? ` (${n(visitors.length)})` : ''}</h2>
+        {visitors === null ? (
+          <p className="adm-empty">Para ver esta lista, rode o arquivo <code>supabase/004_visitantes.sql</code> no SQL Editor do Supabase.</p>
+        ) : visitors.length === 0 ? <p className="adm-empty">Nenhum visitante no período.</p> : (
+          <div className="adm-scroll">
+            <table className="adm-table">
+              <thead><tr><th>Código</th><th>Quem é</th><th>Visitas</th><th>Primeira vez</th><th>Última vez</th><th>Tempo total</th><th>WhatsApp</th><th>Ligar</th><th>Cidade</th><th>Veio de</th></tr></thead>
+              <tbody>
+                {visitors.map((v) => {
+                  const d = (x: string) => new Date(x).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
+                  const phone = v.phone || '';
+                  return (
+                    <tr key={v.code + v.first_seen}>
+                      <td><code>{v.code}</code></td>
+                      <td>{v.name ? <><b>{v.name}</b><br /><small className="adm-muted">{phone.replace(/^(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3')} · {v.email}</small></> : <span className="adm-muted">Anônimo</span>}</td>
+                      <td><b>{n(v.visits)}</b>{v.visits > 1 && <span className="adm-tag t-whatsapp" style={{ marginLeft: 6 }}>voltou</span>}{v.visits !== v.visits_period && <><br /><small className="adm-muted">{n(v.visits_period)} no período</small></>}</td>
+                      <td>{d(v.first_seen)}</td>
+                      <td>{d(v.last_seen)}</td>
+                      <td>{fmtTime(v.total_seconds)}</td>
+                      <td>{v.whatsapp_visits > 0 ? `${n(v.whatsapp_visits)}×` : '—'}</td>
+                      <td>{v.phone_clicks > 0 ? `${n(v.phone_clicks)}×` : '—'}</td>
+                      <td>{v.city || '—'}</td>
+                      <td>{v.first_source || '—'}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <p className="adm-note">Cada aparelho recebe um código na primeira visita. O nome e o telefone aparecem quando a pessoa se cadastra no e-book. Se ela trocar de aparelho ou limpar o navegador, conta como visitante novo.</p>
+      </section>
 
       <section className="adm-card">
         <div className="adm-card-head">

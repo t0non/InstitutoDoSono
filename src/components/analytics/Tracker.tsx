@@ -287,8 +287,11 @@ export default function Tracker() {
       pushPageTime();
       pagePath = path;
     };
-    const onHide = () => { if (document.visibilityState === 'hidden') { pushPageTime(); flush(true); } };
-    const onPageHide = () => { pushPageTime(); flush(true); };
+    // Antes de enviar na saída, fecha o cronômetro das seções que estão na tela
+    // (senão o tempo da última seção, ex.: rodapé, se perdia ao fechar a aba)
+    const stopSections = () => (window as Window & { __trackStopSections?: () => void }).__trackStopSections?.();
+    const onHide = () => { if (document.visibilityState === 'hidden') { stopSections(); pushPageTime(); flush(true); } };
+    const onPageHide = () => { stopSections(); pushPageTime(); flush(true); };
     document.addEventListener('visibilitychange', onHide);
     window.addEventListener('pagehide', onPageHide);
 
@@ -358,8 +361,11 @@ export default function Tracker() {
       else intersecting.forEach(start);
     };
     document.addEventListener('visibilitychange', onVis);
+    const w = window as Window & { __trackStopSections?: () => void };
+    w.__trackStopSections = () => [...visibleSince.keys()].forEach(stop);
 
     return () => {
+      w.__trackStopSections = undefined;
       [...visibleSince.keys()].forEach(stop);
       io.disconnect();
       document.removeEventListener('visibilitychange', onVis);
