@@ -13,7 +13,7 @@ export default function MediaPresence() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-wider mb-3">
             <Tv size={13} /> Presença na Imprensa & Mídia
           </div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#0b2447] tracking-tight mb-3">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#07457D] tracking-tight mb-3">
             O Instituto do Sono na Mídia
           </h2>
           <p className="text-slate-600 text-sm md:text-base leading-relaxed">
@@ -58,7 +58,7 @@ export default function MediaPresence() {
             </div>
 
             <div>
-              <h3 className="text-lg md:text-xl font-bold text-[#0b2447] mb-2 group-hover:text-blue-600 transition-colors flex items-center justify-between">
+              <h3 className="text-lg md:text-xl font-bold text-[#07457D] mb-2 group-hover:text-blue-600 transition-colors flex items-center justify-between">
                 Matéria Especial sobre Higiene do Sono
                 <ExternalLink size={16} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
               </h3>
@@ -102,7 +102,7 @@ export default function MediaPresence() {
             </div>
 
             <div>
-              <h3 className="text-lg md:text-xl font-bold text-[#0b2447] mb-2 group-hover:text-[#e1306c] transition-colors flex items-center justify-between">
+              <h3 className="text-lg md:text-xl font-bold text-[#07457D] mb-2 group-hover:text-[#e1306c] transition-colors flex items-center justify-between">
                 Orientação Médica & Saúde no Instagram
                 <ExternalLink size={16} className="text-slate-400 group-hover:text-[#e1306c] transition-colors" />
               </h3>

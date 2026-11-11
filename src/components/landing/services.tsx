@@ -52,12 +52,12 @@ export default function Services() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {exams.map((exam, index) => (
             <article 
-              className={`exam-card ${exam.badge ? 'border-2 border-[#2563eb] shadow-[0_0_20px_rgba(37,99,235,0.15)] ring-4 ring-blue-50 relative z-10' : ''}`} 
+              className={`exam-card ${exam.badge ? 'border-2 border-[#07457D] shadow-[0_0_20px_rgba(7, 69, 125,0.15)] ring-4 ring-blue-50 relative z-10' : ''}`} 
               key={index}
             >
               <div className="exam-img-wrapper relative">
                 {exam.badge && (
-                  <span className="absolute top-3 right-3 z-10 bg-[#2563eb] text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 uppercase tracking-wide">
+                  <span className="absolute top-3 right-3 z-10 bg-[#07457D] text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 uppercase tracking-wide">
                     <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
                     {exam.badge}
                   </span>
@@ -66,7 +66,7 @@ export default function Services() {
                   src={exam.image} 
                   alt={`Imagem do exame: ${exam.title}`}
                   fill
-                  unoptimized
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 360px"
                   className="exam-img"
                 />
               </div>
@@ -76,7 +76,7 @@ export default function Services() {
                 <a 
                   href={generateCustomLink(`gostaria de agendar o exame: ${exam.title}`)} 
                   aria-label={`Agendar ${exam.title} pelo WhatsApp`}
-                  className="mt-auto w-full h-[44px] bg-[#25D366] hover:bg-[#1ebc57] text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:scale-[1.02] shadow-sm hover:shadow-md"
+                  className="mt-auto w-full h-[44px] bg-[#07457D] hover:bg-[#07457D] text-white rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 hover:scale-[1.02] shadow-sm hover:shadow-md"
                 >
                   <WhatsAppIcon className="h-4 w-4" aria-hidden="true" /> Agendar no WhatsApp
                 </a>
@@ -85,13 +85,11 @@ export default function Services() {
           ))}
         </div>
 
-        <div className="carousel-actions mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
-          <a href={generateCustomLink('gostaria de agendar um exame.')} aria-label="Agendar qualquer exame pelo WhatsApp" className="btn btn-primary w-full sm:w-[260px] h-[56px] flex items-center justify-center">
-            <WhatsAppIcon className="h-5 w-5 mr-2" aria-hidden="true" /> Agendar Exame
-          </a>
-          <a href="#localizacao" aria-label="Ver como chegar à clínica" className="btn w-full sm:w-[260px] h-[56px] border-2 border-[#0b2447]/20 text-[#0b2447] bg-transparent hover:bg-[#0b2447]/5 hover:border-[#0b2447] transition-all duration-300 flex items-center justify-center">
-            Como chegar?
-          </a>
+        <div className="exam-help-panel">
+          <h3>Não encontrou seu exame?</h3>
+          <p>Fale com a nossa equipe para confirmar se realizamos o exame do seu pedido.</p>
+          <div className="exam-help-actions"><a href="/contato/" className="clinic-location-button clinic-location-outline">Falar com a equipe</a><a href={generateCustomLink('não encontrei meu exame. Vocês realizam o exame do meu pedido?')} className="clinic-location-button"><WhatsAppIcon className="h-4 w-4" aria-hidden="true" />Consultar no WhatsApp</a></div>
+          <a href="/onde-atendemos/" className="info-page-link">Onde fazer exames em Belo Horizonte →</a>
         </div>
       </div>
     </section>

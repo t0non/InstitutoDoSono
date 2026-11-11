@@ -9,16 +9,16 @@ export default function TrustSection() {
   const { whatsappLink } = useWhatsAppLinks();
 
   return (
-    <section className="py-12 md:py-20 bg-[#07162c] text-white relative overflow-hidden border-t border-b border-white/5">
+    <section className="py-12 md:py-20 bg-[#07457D] text-white relative overflow-hidden border-t border-b border-white/5">
       {/* Decorative Blur Elements */}
-      <div className="absolute top-1/4 left-0 w-72 h-72 bg-[#3b82f6]/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-72 h-72 bg-[#2563eb]/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/4 left-0 w-72 h-72 bg-[#07457D]/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-0 w-72 h-72 bg-[#07457D]/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container mx-auto px-5 relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-[#3b82f6]/10 text-[#3b82f6] uppercase tracking-wider mb-4 border border-[#3b82f6]/20">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-[#07457D]/10 text-[#07457D] uppercase tracking-wider mb-4 border border-[#07457D]/20">
             <ShieldCheck size={14} /> Segurança, Precisão e Agilidade Diagnóstica
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-6 leading-tight">
@@ -33,8 +33,8 @@ export default function TrustSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           
           {/* Column 1: Patients & Families */}
-          <div className="bg-white/[0.03] border border-white/5 p-6 sm:p-8 rounded-2xl hover:border-[#3b82f6]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
-            <div className="w-12 h-12 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] mb-6">
+          <div className="bg-white/[0.03] border border-white/5 p-6 sm:p-8 rounded-2xl hover:border-[#07457D]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+            <div className="w-12 h-12 rounded-xl bg-[#07457D]/10 flex items-center justify-center text-[#07457D] mb-6">
               <Users size={24} />
             </div>
             <h3 className="text-xl font-bold text-white mb-4">
@@ -49,14 +49,14 @@ export default function TrustSection() {
               <li className="flex items-center gap-2">✓ Infraestrutura de alto padrão e conforto</li>
               <li className="flex items-center gap-2">✓ Laudos aceitos para fins clínicos e judiciais</li>
             </ul>
-            <p className="text-xs text-[#3b82f6] font-medium">
+            <p className="text-xs text-[#07457D] font-medium">
               *Atendimento Particular e por Convênios Médicos
             </p>
           </div>
 
           {/* Column 2: Referrals & Doctors */}
-          <div className="bg-white/[0.03] border border-white/5 p-6 sm:p-8 rounded-2xl hover:border-[#3b82f6]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
-            <div className="w-12 h-12 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] mb-6">
+          <div className="bg-white/[0.03] border border-white/5 p-6 sm:p-8 rounded-2xl hover:border-[#07457D]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+            <div className="w-12 h-12 rounded-xl bg-[#07457D]/10 flex items-center justify-center text-[#07457D] mb-6">
               <Stethoscope size={24} />
             </div>
             <h3 className="text-xl font-bold text-white mb-4">
@@ -74,8 +74,8 @@ export default function TrustSection() {
           </div>
 
           {/* Column 3: Regional Coverage */}
-          <div className="bg-white/[0.03] border border-white/5 p-6 sm:p-8 rounded-2xl hover:border-[#3b82f6]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
-            <div className="w-12 h-12 rounded-xl bg-[#3b82f6]/10 flex items-center justify-center text-[#3b82f6] mb-6">
+          <div className="bg-white/[0.03] border border-white/5 p-6 sm:p-8 rounded-2xl hover:border-[#07457D]/30 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+            <div className="w-12 h-12 rounded-xl bg-[#07457D]/10 flex items-center justify-center text-[#07457D] mb-6">
               <MapPin size={24} />
             </div>
             <h3 className="text-xl font-bold text-white mb-4">
@@ -119,9 +119,9 @@ export default function TrustSection() {
             ].map((examName) => (
               <span 
                 key={examName}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white/5 border border-white/10 text-slate-200 hover:bg-[#3b82f6]/10 hover:border-[#3b82f6]/30 transition-all select-none cursor-default"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white/5 border border-white/10 text-slate-200 hover:bg-[#07457D]/10 hover:border-[#07457D]/30 transition-all select-none cursor-default"
               >
-                <CheckCircle size={14} className="text-[#3b82f6]" /> {examName}
+                <CheckCircle size={14} className="text-[#07457D]" /> {examName}
               </span>
             ))}
           </div>
@@ -131,7 +131,7 @@ export default function TrustSection() {
               href={whatsappLink} 
               target="_blank"
               rel="noopener noreferrer"
-              className="btn w-full sm:w-[280px] h-[56px] bg-[#3b82f6] hover:bg-[#2563eb] text-white border-none transition-all duration-300 flex items-center justify-center font-bold"
+              className="btn w-full sm:w-[280px] h-[56px] bg-[#07457D] hover:bg-[#07457D] text-white border-none transition-all duration-300 flex items-center justify-center font-bold"
             >
               <WhatsAppIcon className="h-5 w-5 mr-2" /> Agende Conforme Encaminhamento
             </a>

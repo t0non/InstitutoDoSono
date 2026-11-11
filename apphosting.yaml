@@ -5,3 +5,23 @@ runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+
+# Variáveis para produção (Firebase App Hosting).
+# 1) Crie os segredos no terminal:
+#    firebase apphosting:secrets:set SUPABASE_SERVICE_ROLE_KEY
+#    firebase apphosting:secrets:set ADMIN_PASSWORD
+#    firebase apphosting:secrets:set ADMIN_SESSION_SECRET
+# 2) Descomente o bloco abaixo e preencha a SUPABASE_URL.
+# env:
+#   - variable: SUPABASE_URL
+#     value: https://SEU-PROJETO.supabase.co
+#   - variable: SUPABASE_SERVICE_ROLE_KEY
+#     secret: SUPABASE_SERVICE_ROLE_KEY
+#   - variable: ADMIN_PASSWORD
+#     secret: ADMIN_PASSWORD
+#   - variable: ADMIN_SESSION_SECRET
+#     secret: ADMIN_SESSION_SECRET
+#   - variable: EBOOK_PDF_URL
+#     value: /ebook/guia-do-sono.pdf
+#   - variable: GEOIP_PROVIDER
+#     value: ipapi

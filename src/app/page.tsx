@@ -7,6 +7,7 @@ import Services from '@/components/landing/services';
 import SmartChat from '@/components/landing/smart-chat';
 import ClinicHistory from '@/components/landing/ClinicHistory';
 import Insurance from '@/components/landing/Insurance';
+import ExamContactBand from '@/components/landing/ExamContactBand';
 import Reviews from '@/components/landing/Reviews';
 import MobileStickyBar from '@/components/landing/MobileStickyBar';
 import Faq from '@/components/landing/Faq';
@@ -23,6 +24,7 @@ export default function Home() {
         <Insurance />
         <Services />
         <Doctors />
+        <ExamContactBand />
         <Reviews />
         <Faq />
         <Location />

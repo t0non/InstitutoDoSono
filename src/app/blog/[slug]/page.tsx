@@ -1,0 +1,15 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import Header from '@/components/landing/header';
+import Footer from '@/components/landing/footer';
+import MobileStickyBar from '@/components/landing/MobileStickyBar';
+import { posts } from '@/lib/blog-posts';
+type Props = {params:Promise<{slug:string}>};
+export function generateStaticParams() { return posts.map(post => ({slug:post.slug})); }
+export async function generateMetadata({params}:Props):Promise<Metadata> { const {slug}=await params; const post=posts.find(item=>item.slug===slug); if(!post) return {}; return {title:`${post.title} | Instituto do Sono`,description:post.description,alternates:{canonical:`https://www.institutodosonobh.com.br/blog/${slug}/`},openGraph:{title:post.title,description:post.description,type:'article',url:`https://www.institutodosonobh.com.br/blog/${slug}/`}}; }
+export default async function BlogArticle({params}:Props) {
+ const {slug}=await params; const post=posts.find(item=>item.slug===slug); if(!post) notFound();
+ const schema={'@context':'https://schema.org','@type':'BlogPosting',headline:post.title,description:post.description,inLanguage:'pt-BR',mainEntityOfPage:`https://www.institutodosonobh.com.br/blog/${slug}/`,publisher:{'@type':'Organization',name:'Instituto do Sono de Minas Gerais'},citation:post.sources.map(source=>source.url)};
+ return <><Header /><main className="info-page"><article className="info-page-container blog-article"><nav className="blog-breadcrumbs" aria-label="Navegação estrutural"><Link href="/">Início</Link><span>/</span><Link href="/blog/">Blog</Link><span>/</span><span>{post.category}</span></nav><p className="info-page-kicker">{post.category}</p><h1>{post.title}</h1><p className="blog-article-description">{post.description}</p>{post.sections.map(section=><section key={section.title}><h2>{section.title}</h2><p>{section.text}</p></section>)}{post.sources.length>0 && <section className="blog-article-sources"><h2>Fontes</h2><ul>{post.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a></li>)}</ul><p>Conteúdo informativo. A indicação de exames e a interpretação dos resultados dependem de avaliação profissional.</p></section>}<div className="blog-article-cta"><h2>Fale com o Instituto do Sono</h2><p>Confirme seu exame, o preparo e as opções de atendimento com nossa equipe.</p><Link href="/contato/" className="clinic-location-button">Entrar em contato</Link></div><nav className="blog-related" aria-label="Artigos relacionados"><h2>Leia também</h2>{[...posts.filter(item=>item.slug!==slug && item.category===post.category), ...posts.slice(posts.findIndex(item=>item.slug===slug)+1), ...posts].filter((item,index,items)=>item.slug!==slug && items.findIndex(other=>other.slug===item.slug)===index).slice(0,3).map(item=><Link key={item.slug} href={`/blog/${item.slug}/`}>{item.title} →</Link>)}</nav></article><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema).replace(/</g,'\\u003c')}} /></main><Footer /><MobileStickyBar /></>;
+}

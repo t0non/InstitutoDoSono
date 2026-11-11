@@ -51,7 +51,7 @@ export default function Faq() {
     <section id="faq" aria-labelledby="faq-title" className="py-12 md:py-20 bg-white">
         <div className="container mx-auto px-5" style={{ maxWidth: '800px' }}>
             <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                <h2 id="faq-title" className="text-3xl font-extrabold text-[#0b2447] mb-2">Dúvidas Frequentes sobre Exames do Sono</h2>
+                <h2 id="faq-title" className="text-3xl font-extrabold text-[#07457D] mb-2">Dúvidas Frequentes</h2>
                 <p className="text-slate-500 text-sm sm:text-base leading-relaxed">Tire suas principais dúvidas sobre a realização de polissonografia, eletroencefalograma, convênios aceitos e exames domiciliares em Belo Horizonte.</p>
             </div>
 

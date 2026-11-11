@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Building, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MapPin } from 'lucide-react';
+import { config } from '@/lib/config';
+
 
 const clinicImages = [
   { src: '/images/escritorio (1).jpeg', alt: 'Sede Instituto do Sono - Fachada Externa' },
@@ -17,6 +19,16 @@ export default function ClinicHistory() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
+  // só baixa a foto quando ela vai aparecer (atual + próxima)
+  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([0, 1]));
+  useEffect(() => {
+    setLoaded((prev) => {
+      const next = (activeIndex + 1) % clinicImages.length;
+      if (prev.has(activeIndex) && prev.has(next)) return prev;
+      return new Set([...prev, activeIndex, next]);
+    });
+  }, [activeIndex]);
+
   useEffect(() => {
     if (isHovered) return;
     const interval = setInterval(() => {
@@ -25,31 +37,17 @@ export default function ClinicHistory() {
     return () => clearInterval(interval);
   }, [isHovered]);
 
-  const handlePrev = () => {
-    setActiveIndex((prevIndex) => (prevIndex - 1 + clinicImages.length) % clinicImages.length);
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % clinicImages.length);
-  };
-
   return (
     <section id="clinica" aria-labelledby="clinica-title" className="history-section">
       <div className="container flex flex-col">
-        {/* Mobile Header (Shows above images) */}
-        <div className="category-header flex flex-row items-center gap-2 mb-6 lg:hidden" style={{ border: 'none', paddingBottom: 0 }}>
-           <Building className="icon shrink-0 text-[#2563eb]" aria-hidden="true" />
-           <h2 id="clinica-title-mobile" className="flex-1 min-w-0 text-xl font-bold text-[#0b2447]">Clínica do Sono em Belo Horizonte: Tradição e Tecnologia</h2>
+        <div className="clinic-section-heading">
+          <h2 id="clinica-title">Nossa Clínica</h2>
         </div>
 
         <div className="history-grid items-start">
           {/* Text Content */}
           <div className="history-text min-w-0 order-last lg:order-first" data-aos="fade-right">
-            {/* Desktop Header */}
-            <header className="category-header hidden lg:flex flex-row items-center gap-2" style={{ border: 'none', paddingBottom: 0 }}>
-               <Building className="icon shrink-0 text-[#2563eb]" aria-hidden="true" />
-               <h2 id="clinica-title" className="flex-1 min-w-0 text-2xl font-bold text-[#0b2447]">Clínica do Sono em Belo Horizonte: Tradição e Tecnologia</h2>
-            </header>
+            <h3 className="clinic-content-title">Clínica do Sono em Belo Horizonte</h3>
             
             <p className="text-[#64748b] mb-4 leading-relaxed">
               Desde <strong>1994</strong>, o <strong>Instituto do Sono de Minas Gerais</strong> é a principal referência em <strong>medicina do sono e neurologia em Belo Horizonte</strong>. Nossa missão é entregar diagnósticos precisos e acolhimento humano através de:
@@ -61,6 +59,16 @@ export default function ClinicHistory() {
               <li><strong>Suítes de Exames Padrão Hotel:</strong> Isolamento acústico, camas confortáveis e climatização para simular o seu lar.</li>
               <li><strong>Diagnósticos Seguros e Indolores:</strong> Exames como a <strong>Polissonografia (clínica e domiciliar)</strong>, o <strong>Eletroencefalograma (EEG)</strong> e <strong>Potenciais Evocados</strong> ocorrem de forma 100% natural, essenciais para diagnósticos precisos.</li>
             </ul>
+
+            <a
+              href={config.googleMapsDirectionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ver como chegar ao Instituto do Sono no Google Maps"
+              className="btn btn-primary w-full sm:w-[260px] h-[56px] flex items-center justify-center"
+            >
+              <MapPin className="h-5 w-5 mr-2" /> Como chegar
+            </a>
           </div>
           
           {/* Images Slider */}
@@ -79,33 +87,15 @@ export default function ClinicHistory() {
                     index === activeIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
                   }`}
                 >
-                  <Image
+                  {loaded.has(index) && <Image
                     src={image.src}
                     alt={image.alt}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority={index === 0}
-                    unoptimized
+                    sizes="(max-width: 768px) 100vw, 600px"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                  />}
                 </div>
               ))}
-
-              {/* Slider Controls */}
-              <button 
-                onClick={handlePrev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
-                aria-label="Imagem anterior"
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <button 
-                onClick={handleNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
-                aria-label="Próxima imagem"
-              >
-                <ChevronRight size={24} />
-              </button>
 
               {/* Number indicator */}
               <div className="absolute top-4 right-4 z-20 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -114,14 +104,14 @@ export default function ClinicHistory() {
             </div>
 
             {/* Thumbnail Row */}
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-blue-600/30">
+            <div className="clinic-thumbnails flex gap-2 overflow-x-auto pb-2">
               {clinicImages.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
                   className={`relative flex-shrink-0 w-16 h-12 sm:w-20 sm:h-14 rounded-lg overflow-hidden border-2 transition-all ${
                     index === activeIndex 
-                      ? 'border-[#3b82f6] scale-95 shadow-md shadow-blue-500/20' 
+                      ? 'border-[#07457D] scale-95 shadow-md shadow-blue-500/20' 
                       : 'border-transparent opacity-60 hover:opacity-100'
                   }`}
                 >
@@ -130,7 +120,6 @@ export default function ClinicHistory() {
                     alt={`Miniatura ${index + 1}`}
                     fill
                     sizes="80px"
-                    unoptimized
                     className="object-cover"
                   />
                 </button>
