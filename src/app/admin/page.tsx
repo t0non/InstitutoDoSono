@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Users, MessageCircle, BookOpen, Clock, MousePointerClick, Eye, Compass, MapPin, Download } from 'lucide-react';
 import { sbRpc, sbSelect, isSupabaseConfigured } from '@/lib/supabase-server';
 
 export const dynamic = 'force-dynamic';
@@ -92,11 +93,11 @@ function Delta({ now, prev, invert = false, suffix = '%' }: { now: number; prev:
   return <em className={`adm-delta ${cls}`}>{diff > 0 ? '▲' : diff < 0 ? '▼' : ''} {Math.abs(diff).toFixed(suffix === 'pp' ? 1 : 0)}{suffix === 'pp' ? ' p.p.' : '%'}</em>;
 }
 
-function Bars({ rows, label, value, format = n }: { rows: Row[]; label: (r: Row) => React.ReactNode; value: (r: Row) => number; format?: (v: number) => string }) {
+function Bars({ rows, label, value, format = n, green = false }: { rows: Row[]; label: (r: Row) => React.ReactNode; value: (r: Row) => number; format?: (v: number) => string; green?: boolean }) {
   const top = Math.max(1, ...rows.map(value));
   if (!rows.length) return <p className="adm-empty">Sem dados no período.</p>;
   return (
-    <ul className="adm-bars">
+    <ul className={`adm-bars${green ? ' green' : ''}`}>
       {rows.map((r, i) => (
         <li key={i}>
           <div className="adm-bar-label" title={String(label(r))}>{label(r)}</div>
@@ -194,16 +195,36 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const months = lastMonths();
   const hasData = t.sessions > 0;
 
+  const fmtDate = (x: string) => new Date(x).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
+  const fmtPhone = (p: string) => p.replace(/^(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3');
+  const testHref = (() => {
+    const q = new URLSearchParams();
+    if (sp.p) q.set('p', sp.p);
+    if (sp.m) q.set('m', sp.m);
+    if (!includeTest) q.set('t', '1');
+    const s = q.toString();
+    return `/admin${s ? `?${s}` : ''}`;
+  })();
+  const insights: { icon: React.ReactNode; label: string; value: string; sub?: string }[] = [];
+  if (hasData) {
+    insights.push({ icon: <Clock size={18} />, label: 'Horário mais movimentado', value: `${bestHour.hour}h às ${bestHour.hour + 1}h`, sub: `mais visitas em ${WEEKDAYS[bestDow.dow]}` });
+    if (topWaSection) insights.push({ icon: <MessageCircle size={18} />, label: 'De onde mais saem cliques no WhatsApp', value: topWaSection.section, sub: `${n(topWaSection.clicks)} cliques${bestWaHour.whatsapp > 0 ? ` · pico às ${bestWaHour.hour}h` : ''}` });
+    if (topClick) insights.push({ icon: <MousePointerClick size={18} />, label: 'Botão mais clicado', value: topClick.label, sub: `${n(topClick.clicks)} cliques${topClick.section ? ` · ${topClick.section}` : ''}` });
+    if (stickiest) insights.push({ icon: <Eye size={18} />, label: 'Seção onde mais param', value: stickiest.section, sub: `${fmtTime(stickiest.avg_seconds)} em média` });
+    if (dash.sources[0]) insights.push({ icon: <Compass size={18} />, label: 'Principal origem', value: dash.sources[0].source, sub: `${n(dash.sources[0].sessions)} visitas · ${pct(dash.sources[0].whatsapp, dash.sources[0].sessions)}% clicaram no WhatsApp` });
+    if (dash.cities[0] && dash.cities[0].city !== 'Não identificada') insights.push({ icon: <MapPin size={18} />, label: 'Cidade que mais acessa', value: dash.cities[0].city, sub: `${n(dash.cities[0].sessions)} visitas` });
+  }
+
   return (
     <main className="adm-wrap">
       <header className="adm-top">
-        <div>
-          <p className="adm-kicker">Instituto do Sono · <span className="adm-live"><i />{n(dash.online_now)} no site agora</span></p>
+        <div className="adm-title">
+          <p className="adm-kicker">Instituto do Sono</p>
           <h1>Painel do site</h1>
-          <p className="adm-period">{period.label} · comparado com o período anterior</p>
+          <p className="adm-period"><span className="adm-live"><i />{n(dash.online_now)} no site agora</span> · {period.label}</p>
         </div>
         <div className="adm-filters">
-          <nav className="adm-range">
+          <nav className="adm-range" aria-label="Período">
             {Object.entries(PRESETS).map(([k, v]) => (
               <Link key={k} href={qs({ p: k })} className={period.key === k ? 'on' : ''}>{v}</Link>
             ))}
@@ -214,24 +235,20 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               <option value="" disabled>Escolher mês…</option>
               {months.map((mo) => <option key={mo.value} value={mo.value}>{mo.label}</option>)}
             </select>
-            <button type="submit">Ver mês</button>
+            <button type="submit">Ver</button>
           </form>
-          <Link
-            className={`adm-test ${includeTest ? 'on' : ''}`}
-            href={(() => {
-              const q = new URLSearchParams();
-              if (sp.p) q.set('p', sp.p);
-              if (sp.m) q.set('m', sp.m);
-              if (!includeTest) q.set('t', '1');
-              const s = q.toString();
-              return `/admin${s ? `?${s}` : ''}`;
-            })()}
-          >
-            {includeTest ? '✓ Incluindo testes' : 'Incluir testes'}
-          </Link>
+          <Link className={`adm-test ${includeTest ? 'on' : ''}`} href={testHref}>{includeTest ? '✓ Incluindo testes' : 'Incluir testes'}</Link>
           <form method="post" action="/api/admin/logout"><button className="adm-ghost">Sair</button></form>
         </div>
       </header>
+
+      <nav className="adm-nav" aria-label="Seções do painel">
+        <a href="#resultado">Resultado</a>
+        <a href="#comportamento">O que fazem no site</a>
+        <a href="#quando">Quando e como acessam</a>
+        <a href="#origem">De onde vêm</a>
+        <a href="#pessoas">Visitantes e leads</a>
+      </nav>
 
       {!hasData && (
         <div className="adm-card adm-note-card">
@@ -239,31 +256,54 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         </div>
       )}
 
+      {/* ---------- RESULTADO ---------- */}
+      <h2 className="adm-group" id="resultado">Resultado <small>comparado com o período anterior</small></h2>
       <section className="adm-kpis">
-        <div className="adm-kpi"><span>Visitas</span><strong>{n(t.sessions)}</strong><small>{n(t.visitors)} pessoas · {n(t.returning)} voltaram</small><Delta now={t.sessions} prev={pt?.sessions} /></div>
-        <div className="adm-kpi"><span>Tempo médio ativo</span><strong>{fmtTime(t.avg_seconds)}</strong><small>metade fica mais que {fmtTime(t.median_seconds)}</small><Delta now={t.avg_seconds} prev={pt?.avg_seconds} /></div>
-        <div className="adm-kpi"><span>Saíram em menos de 10s</span><strong>{t.bounce_rate}%</strong><small>rolagem média {t.avg_scroll}% da página</small><Delta now={t.bounce_rate} prev={pt?.bounce_rate} invert suffix="pp" /></div>
-        <div className="adm-kpi hl"><span>Visitas que clicaram no WhatsApp</span><strong>{n(t.whatsapp_sessions)}</strong><small>{t.whatsapp_rate}% das visitas · {n(t.whatsapp_clicks)} cliques</small><Delta now={t.whatsapp_sessions} prev={pt?.whatsapp_sessions} /></div>
-        <div className="adm-kpi hl"><span>Leads do e-book</span><strong>{n(t.leads)}</strong><small>{t.lead_rate}% das visitas</small><Delta now={t.leads} prev={pt?.leads} /></div>
-        <div className="adm-kpi"><span>Ligações (cliques)</span><strong>{n(t.phone_clicks)}</strong><small>{n(t.pageviews)} páginas vistas</small><Delta now={t.phone_clicks} prev={pt?.phone_clicks} /></div>
+        <div className="adm-kpi">
+          <div className="adm-kpi-head"><span className="adm-ico"><Users size={18} /></span>Visitas</div>
+          <strong>{n(t.sessions)}</strong>
+          <small>{n(t.visitors)} pessoas · {n(t.returning)} voltaram</small>
+          <Delta now={t.sessions} prev={pt?.sessions} />
+        </div>
+        <div className="adm-kpi hl">
+          <div className="adm-kpi-head"><span className="adm-ico g"><MessageCircle size={18} /></span>Clicaram no WhatsApp</div>
+          <strong>{n(t.whatsapp_sessions)}</strong>
+          <small>{t.whatsapp_rate}% das visitas · {n(t.whatsapp_clicks)} cliques</small>
+          <Delta now={t.whatsapp_sessions} prev={pt?.whatsapp_sessions} />
+        </div>
+        <div className="adm-kpi hl">
+          <div className="adm-kpi-head"><span className="adm-ico g"><BookOpen size={18} /></span>Leads do e-book</div>
+          <strong>{n(t.leads)}</strong>
+          <small>{t.lead_rate}% das visitas</small>
+          <Delta now={t.leads} prev={pt?.leads} />
+        </div>
+        <div className="adm-kpi">
+          <div className="adm-kpi-head"><span className="adm-ico"><Clock size={18} /></span>Tempo médio no site</div>
+          <strong>{fmtTime(t.avg_seconds)}</strong>
+          <small>metade fica mais de {fmtTime(t.median_seconds)}</small>
+          <Delta now={t.avg_seconds} prev={pt?.avg_seconds} />
+        </div>
+      </section>
+      <section className="adm-strip">
+        <div><span>Saíram em menos de 10s</span><b>{t.bounce_rate}%</b><Delta now={t.bounce_rate} prev={pt?.bounce_rate} invert suffix="pp" /></div>
+        <div><span>Cliques em “Ligar”</span><b>{n(t.phone_clicks)}</b><Delta now={t.phone_clicks} prev={pt?.phone_clicks} /></div>
+        <div><span>Páginas vistas</span><b>{n(t.pageviews)}</b><Delta now={t.pageviews} prev={pt?.pageviews} /></div>
+        <div><span>Rolagem média da página</span><b>{t.avg_scroll}%</b></div>
       </section>
 
-      {hasData && (
-        <section className="adm-card adm-insights">
-          <h2>Resumo rápido</h2>
-          <ul>
-            <li>Mais visitas entre <b>{bestHour.hour}h e {bestHour.hour + 1}h</b>, e mais em <b>{WEEKDAYS[bestDow.dow]}</b>.{bestWaHour.whatsapp > 0 && <> Horário com mais cliques no WhatsApp: <b>{bestWaHour.hour}h</b>.</>}</li>
-            {stickiest && <li>Seção onde as pessoas mais param: <b>{stickiest.section}</b> ({fmtTime(stickiest.avg_seconds)} em média).</li>}
-            {topClick && <li>Botão mais clicado: <b>{topClick.label}</b> ({n(topClick.clicks)} cliques{topClick.section ? `, em ${topClick.section}` : ''}).</li>}
-            {topWaSection && <li>De onde mais saem cliques no WhatsApp: <b>{topWaSection.section}</b> ({n(topWaSection.clicks)}).</li>}
-            {dash.sources[0] && <li>Principal origem: <b>{dash.sources[0].source}</b> ({n(dash.sources[0].sessions)} visitas, {pct(dash.sources[0].whatsapp, dash.sources[0].sessions)}% clicaram no WhatsApp).</li>}
-            {dash.cities[0] && dash.cities[0].city !== 'Não identificada' && <li>Cidade que mais acessa: <b>{dash.cities[0].city}</b>.</li>}
-          </ul>
+      {insights.length > 0 && (
+        <section className="adm-insights">
+          {insights.map((it) => (
+            <div key={it.label} className="adm-insight">
+              <span className="adm-ico">{it.icon}</span>
+              <div><small>{it.label}</small><b>{it.value}</b>{it.sub && <em>{it.sub}</em>}</div>
+            </div>
+          ))}
         </section>
       )}
 
       <section className="adm-card">
-        <h2>Visitas por dia</h2>
+        <div className="adm-card-head"><h3>Visitas por dia</h3><p className="adm-legend"><i className="lg-a" /> visitas <i className="lg-b" /> clicaram no WhatsApp</p></div>
         <div className="adm-cols" style={{ gridTemplateColumns: `repeat(${Math.max(dash.by_day.length, 1)}, minmax(0,1fr))` }}>
           {dash.by_day.map((d) => (
             <div key={d.day} className="adm-col" title={`${d.day.slice(8, 10)}/${d.day.slice(5, 7)}: ${d.sessions} visitas · ${d.whatsapp} WhatsApp · ${d.leads} leads`}>
@@ -275,37 +315,21 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             </div>
           ))}
         </div>
-        <p className="adm-legend"><i className="lg-a" /> visitas <i className="lg-b" /> clicaram no WhatsApp</p>
       </section>
 
-      <section className="adm-card">
-        <h2>Funil do e-book</h2>
-        <div className="adm-funnel">
-          {[
-            ['Pop-up apareceu', dash.ebook.opens],
-            ['Clicou em "Receber"', dash.ebook.offer_clicks],
-            ['Cadastrou (lead)', dash.ebook.submits],
-          ].map(([label, v], i, arr) => (
-            <div key={String(label)} className="adm-funnel-step">
-              <strong>{n(Number(v))}</strong>
-              <span>{label}</span>
-              {i > 0 && <small>{pct(Number(v), Number(arr[i - 1][1]))}% da etapa anterior</small>}
-            </div>
-          ))}
-          <div className="adm-funnel-step muted"><strong>{n(dash.ebook.closes)}</strong><span>Fecharam sem cadastrar</span></div>
-        </div>
-      </section>
+      {/* ---------- COMPORTAMENTO ---------- */}
+      <h2 className="adm-group" id="comportamento">O que fazem no site</h2>
 
       <section className="adm-card">
-        <h2>Páginas mais acessadas</h2>
+        <div className="adm-card-head"><h3>Páginas mais acessadas</h3></div>
         <div className="adm-scroll">
           <table className="adm-table">
-            <thead><tr><th>Página</th><th>Visualizações</th><th>Visitas</th><th>Entraram por ela</th><th>Tempo médio</th><th>WhatsApp</th></tr></thead>
+            <thead><tr><th>Página</th><th>Aberturas</th><th>Visitas</th><th>Entraram por ela</th><th>Tempo médio</th><th>WhatsApp</th></tr></thead>
             <tbody>
               {dash.pages.length === 0 && <tr><td colSpan={6} className="adm-empty">Sem dados no período.</td></tr>}
               {dash.pages.map((pg) => (
                 <tr key={pg.page}>
-                  <td><b>{pageName(pg.page)}</b><br /><small className="adm-muted">{pg.page}</small></td>
+                  <td><b>{pageName(pg.page)}</b><small className="adm-sub">{pg.page}</small></td>
                   <td>{n(pg.views)}</td>
                   <td><div className="adm-mini"><div style={{ width: `${Math.min(pg.reach, 100)}%` }} /></div>{n(pg.sessions)} <small className="adm-muted">({pg.reach}%)</small></td>
                   <td>{n(pg.entrances)}</td>
@@ -316,159 +340,163 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             </tbody>
           </table>
         </div>
-        <p className="adm-note">Visualizações = vezes que a página abriu. Visitas = pessoas diferentes que abriram (e % do total). “Entraram por ela” = primeira página da visita. Tempo médio = tempo ativo na página por visita.</p>
+        <p className="adm-note">Aberturas = vezes que a página abriu. Visitas = visitas diferentes que abriram a página. “Entraram por ela” = foi a primeira página da visita.</p>
       </section>
 
+      <section className="adm-card">
+        <div className="adm-card-head"><h3>Seções da página: até onde chegam e onde param</h3></div>
+        <div className="adm-scroll">
+          <table className="adm-table">
+            <thead><tr><th>Seção</th><th>Chegaram até ela</th><th>Tempo médio na tela</th><th>Tempo total</th></tr></thead>
+            <tbody>
+              {dash.sections.length === 0 && <tr><td colSpan={4} className="adm-empty">Sem dados no período.</td></tr>}
+              {dash.sections.filter((s) => s.sessions > 0).map((s) => (
+                <tr key={s.section}>
+                  <td><b>{s.section}</b></td>
+                  <td><div className="adm-mini wide"><div style={{ width: `${Math.min(s.reach, 100)}%` }} /></div>{s.reach}% <small className="adm-muted">({n(s.sessions)})</small></td>
+                  <td>{fmtTime(s.avg_seconds)}</td>
+                  <td>{fmtTime(s.total_seconds)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div className="adm-grid2 wide-left">
+        <section className="adm-card">
+          <div className="adm-card-head"><h3>Botões mais clicados</h3></div>
+          <div className="adm-scroll">
+            <table className="adm-table">
+              <thead><tr><th>Botão</th><th>Tipo</th><th>Onde</th><th>Cliques</th></tr></thead>
+              <tbody>
+                {dash.clicks.length === 0 && <tr><td colSpan={4} className="adm-empty">Sem cliques no período.</td></tr>}
+                {dash.clicks.slice(0, 25).map((c, i) => (
+                  <tr key={i}><td><b>{c.label}</b></td><td><span className={`adm-tag t-${c.target}`}>{TARGETS[c.target] || c.target}</span></td><td>{c.section || '—'}</td><td><b>{n(c.clicks)}</b></td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <div className="adm-stack">
+          <section className="adm-card">
+            <div className="adm-card-head"><h3>Cliques no WhatsApp por seção</h3></div>
+            <Bars green rows={dash.whatsapp_by_section as unknown as Row[]} label={(r) => String(r.section)} value={(r) => Number(r.clicks)} />
+          </section>
+          <section className="adm-card">
+            <div className="adm-card-head"><h3>Cliques por tipo</h3></div>
+            <Bars rows={dash.click_targets as unknown as Row[]} label={(r) => TARGETS[String(r.target)] || String(r.target)} value={(r) => Number(r.clicks)} />
+          </section>
+        </div>
+      </div>
+
+      <section className="adm-card">
+        <div className="adm-card-head"><h3>Funil do e-book</h3></div>
+        <div className="adm-funnel">
+          {([['Pop-up apareceu', dash.ebook.opens], ['Clicou em “Receber”', dash.ebook.offer_clicks], ['Cadastrou (lead)', dash.ebook.submits]] as [string, number][]).map(([label, v], i, arr) => (
+            <div key={label} className="adm-funnel-step">
+              <strong>{n(v)}</strong>
+              <span>{label}</span>
+              {i > 0 && arr[i - 1][1] > 0 && v <= arr[i - 1][1] && <small>{pct(v, arr[i - 1][1])}% da etapa anterior</small>}
+            </div>
+          ))}
+          <div className="adm-funnel-step muted"><strong>{n(dash.ebook.closes)}</strong><span>Fecharam sem cadastrar</span></div>
+        </div>
+      </section>
+
+      {/* ---------- QUANDO E COMO ---------- */}
+      <h2 className="adm-group" id="quando">Quando e como acessam</h2>
       <div className="adm-grid2">
         <section className="adm-card">
-          <h2>Horário das visitas</h2>
+          <div className="adm-card-head"><h3>Horário das visitas</h3></div>
           <div className="adm-hours">
             {dash.by_hour.map((h) => (
-              <div key={h.hour} title={`${h.hour}h: ${h.sessions} visitas · ${h.whatsapp} WhatsApp`} style={{ opacity: 0.15 + (h.sessions / maxHour) * 0.85 }}>
+              <div key={h.hour} className={h.sessions / maxHour >= 0.5 ? 'hot' : ''} title={`${h.hour}h: ${h.sessions} visitas · ${h.whatsapp} WhatsApp`} style={{ ['--lvl' as string]: h.sessions / maxHour }}>
                 <b>{h.hour}h</b><span>{h.sessions}</span>
               </div>
             ))}
           </div>
-          <h3>Dia da semana</h3>
+          <h4>Dia da semana</h4>
           <Bars rows={dash.by_weekday as unknown as Row[]} label={(r) => WEEKDAYS[Number(r.dow)]} value={(r) => Number(r.sessions)} />
         </section>
-
         <section className="adm-card">
-          <h2>Quanto tempo ficam</h2>
+          <div className="adm-card-head"><h3>Quanto tempo ficam</h3></div>
           <Bars rows={dash.durations as unknown as Row[]} label={(r) => String(r.bucket)} value={(r) => Number(r.sessions)} />
-          <h3>Até onde rolam a página</h3>
+          <h4>Até onde rolam a página</h4>
           <Bars rows={dash.scroll as unknown as Row[]} label={(r) => (Number(r.bucket) >= 100 ? 'até o fim' : `${r.bucket}–${Number(r.bucket) + 24}%`)} value={(r) => Number(r.sessions)} />
         </section>
       </div>
-
-      <section className="adm-card">
-        <h2>Seções: até onde chegam e onde param</h2>
-        <table className="adm-table">
-          <thead><tr><th>Seção</th><th>Chegaram até ela</th><th>Tempo médio na tela</th><th>Tempo total</th></tr></thead>
-          <tbody>
-            {dash.sections.length === 0 && <tr><td colSpan={4} className="adm-empty">Sem dados no período.</td></tr>}
-            {dash.sections.map((s) => (
-              <tr key={s.section}>
-                <td>{s.section}</td>
-                <td><div className="adm-mini"><div style={{ width: `${Math.min(s.reach, 100)}%` }} /></div>{s.reach}% <small className="adm-muted">({n(s.sessions)})</small></td>
-                <td>{fmtTime(s.avg_seconds)}</td>
-                <td>{fmtTime(s.total_seconds)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="adm-note">“Chegaram até ela” = % das visitas em que a seção ocupou boa parte da tela. Tempo conta só com a aba aberta.</p>
-      </section>
-
       <div className="adm-grid2">
         <section className="adm-card">
-          <h2>Botões mais clicados</h2>
-          <table className="adm-table">
-            <thead><tr><th>Botão</th><th>Tipo</th><th>Onde</th><th>Cliques</th></tr></thead>
-            <tbody>
-              {dash.clicks.length === 0 && <tr><td colSpan={4} className="adm-empty">Sem cliques no período.</td></tr>}
-              {dash.clicks.slice(0, 25).map((c, i) => (
-                <tr key={i}><td>{c.label}</td><td><span className={`adm-tag t-${c.target}`}>{TARGETS[c.target] || c.target}</span></td><td>{c.section || '—'}</td><td>{n(c.clicks)}</td></tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-        <section className="adm-card">
-          <h2>Cliques no WhatsApp por seção</h2>
-          <Bars rows={dash.whatsapp_by_section as unknown as Row[]} label={(r) => String(r.section)} value={(r) => Number(r.clicks)} />
-          <h3>Cliques por tipo</h3>
-          <Bars rows={dash.click_targets as unknown as Row[]} label={(r) => TARGETS[String(r.target)] || String(r.target)} value={(r) => Number(r.clicks)} />
-        </section>
-      </div>
-
-      <div className="adm-grid2">
-        <section className="adm-card">
-          <h2>De onde vêm</h2>
-          <table className="adm-table">
-            <thead><tr><th>Origem</th><th>Visitas</th><th>Tempo</th><th>WhatsApp</th><th>Leads</th></tr></thead>
-            <tbody>
-              {dash.sources.length === 0 && <tr><td colSpan={5} className="adm-empty">Sem dados no período.</td></tr>}
-              {dash.sources.map((s, i) => <tr key={i}><td>{s.source}</td><td>{n(s.sessions)}</td><td>{fmtTime(s.avg_seconds)}</td><td>{n(s.whatsapp)} <small className="adm-muted">({pct(s.whatsapp, s.sessions)}%)</small></td><td>{n(s.leads)}</td></tr>)}
-            </tbody>
-          </table>
-          {dash.campaigns.length > 0 && (
-            <>
-              <h3>Campanhas (UTM)</h3>
-              <table className="adm-table">
-                <thead><tr><th>Campanha</th><th>Fonte / meio</th><th>Visitas</th><th>WhatsApp</th><th>Leads</th></tr></thead>
-                <tbody>{dash.campaigns.map((c, i) => <tr key={i}><td>{c.campaign}</td><td>{c.source} / {c.medium}</td><td>{n(c.sessions)}</td><td>{n(c.whatsapp)}</td><td>{n(c.leads)}</td></tr>)}</tbody>
-              </table>
-            </>
-          )}
-        </section>
-        <section className="adm-card">
-          <h2>Região</h2>
-          <table className="adm-table">
-            <thead><tr><th>Cidade</th><th>Estado</th><th>Visitas</th><th>WhatsApp</th><th>Leads</th></tr></thead>
-            <tbody>
-              {dash.cities.length === 0 && <tr><td colSpan={5} className="adm-empty">Sem dados no período.</td></tr>}
-              {dash.cities.map((c, i) => <tr key={i}><td>{c.city}</td><td>{c.region || '—'}</td><td>{n(c.sessions)}</td><td>{n(c.whatsapp)}</td><td>{n(c.leads)}</td></tr>)}
-            </tbody>
-          </table>
-        </section>
-      </div>
-
-      <div className="adm-grid2">
-        <section className="adm-card">
-          <h2>Aparelho</h2>
+          <div className="adm-card-head"><h3>Aparelho</h3></div>
           <table className="adm-table">
             <thead><tr><th>Aparelho</th><th>Visitas</th><th>Tempo médio</th><th>WhatsApp</th></tr></thead>
-            <tbody>{dash.devices.map((d, i) => <tr key={i}><td>{DEVICES[d.device] || d.device}</td><td>{n(d.sessions)} <small className="adm-muted">({pct(d.sessions, t.sessions)}%)</small></td><td>{fmtTime(d.avg_seconds)}</td><td>{n(d.whatsapp)}</td></tr>)}</tbody>
+            <tbody>
+              {dash.devices.length === 0 && <tr><td colSpan={4} className="adm-empty">Sem dados no período.</td></tr>}
+              {dash.devices.map((d, i) => <tr key={i}><td><b>{DEVICES[d.device] || (d.device === '?' ? 'Não identificado' : d.device)}</b></td><td>{n(d.sessions)} <small className="adm-muted">({pct(d.sessions, t.sessions)}%)</small></td><td>{fmtTime(d.avg_seconds)}</td><td>{n(d.whatsapp)}</td></tr>)}
+            </tbody>
           </table>
-          <h3>Navegador</h3>
-          <Bars rows={dash.browsers as unknown as Row[]} label={(r) => String(r.name)} value={(r) => Number(r.sessions)} />
         </section>
         <section className="adm-card">
-          <h2>Página de entrada</h2>
-          <Bars rows={dash.landing_pages as unknown as Row[]} label={(r) => pageName(String(r.page))} value={(r) => Number(r.sessions)} />
-          <h3>Sistema</h3>
-          <Bars rows={dash.os as unknown as Row[]} label={(r) => String(r.name)} value={(r) => Number(r.sessions)} />
+          <div className="adm-card-head"><h3>Navegador e sistema</h3></div>
+          <Bars rows={dash.browsers as unknown as Row[]} label={(r) => (String(r.name) === '?' ? 'Não identificado' : String(r.name))} value={(r) => Number(r.sessions)} />
+          <h4>Sistema</h4>
+          <Bars rows={dash.os as unknown as Row[]} label={(r) => (String(r.name) === '?' ? 'Não identificado' : String(r.name))} value={(r) => Number(r.sessions)} />
         </section>
       </div>
 
-      <section className="adm-card">
-        <h2>Visitantes{visitors ? ` (${n(visitors.length)})` : ''}</h2>
-        {visitors === null ? (
-          <p className="adm-empty">Para ver esta lista, rode o arquivo <code>supabase/004_visitantes.sql</code> no SQL Editor do Supabase.</p>
-        ) : visitors.length === 0 ? <p className="adm-empty">Nenhum visitante no período.</p> : (
+      {/* ---------- ORIGEM ---------- */}
+      <h2 className="adm-group" id="origem">De onde vêm</h2>
+      <div className="adm-grid2">
+        <section className="adm-card">
+          <div className="adm-card-head"><h3>Origem das visitas</h3></div>
           <div className="adm-scroll">
             <table className="adm-table">
-              <thead><tr><th>Código</th><th>Quem é</th><th>Visitas</th><th>Primeira vez</th><th>Última vez</th><th>Tempo total</th><th>WhatsApp</th><th>Ligar</th><th>Cidade</th><th>Veio de</th></tr></thead>
+              <thead><tr><th>Origem</th><th>Visitas</th><th>Tempo</th><th>WhatsApp</th><th>Leads</th></tr></thead>
               <tbody>
-                {visitors.map((v) => {
-                  const d = (x: string) => new Date(x).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
-                  const phone = v.phone || '';
-                  return (
-                    <tr key={v.code + v.first_seen}>
-                      <td><code>{v.code}</code></td>
-                      <td>{v.name ? <><b>{v.name}</b><br /><small className="adm-muted">{phone.replace(/^(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3')} · {v.email}</small></> : <span className="adm-muted">Anônimo</span>}</td>
-                      <td><b>{n(v.visits)}</b>{v.visits > 1 && <span className="adm-tag t-whatsapp" style={{ marginLeft: 6 }}>voltou</span>}{v.visits !== v.visits_period && <><br /><small className="adm-muted">{n(v.visits_period)} no período</small></>}</td>
-                      <td>{d(v.first_seen)}</td>
-                      <td>{d(v.last_seen)}</td>
-                      <td>{fmtTime(v.total_seconds)}</td>
-                      <td>{v.whatsapp_visits > 0 ? `${n(v.whatsapp_visits)}×` : '—'}</td>
-                      <td>{v.phone_clicks > 0 ? `${n(v.phone_clicks)}×` : '—'}</td>
-                      <td>{v.city || '—'}</td>
-                      <td>{v.first_source || '—'}</td>
-                    </tr>
-                  );
-                })}
+                {dash.sources.length === 0 && <tr><td colSpan={5} className="adm-empty">Sem dados no período.</td></tr>}
+                {dash.sources.map((s, i) => <tr key={i}><td><b>{s.source}</b></td><td>{n(s.sessions)}</td><td>{fmtTime(s.avg_seconds)}</td><td>{n(s.whatsapp)} <small className="adm-muted">({pct(s.whatsapp, s.sessions)}%)</small></td><td>{n(s.leads)}</td></tr>)}
               </tbody>
             </table>
           </div>
-        )}
-        <p className="adm-note">Cada aparelho recebe um código na primeira visita. O nome e o telefone aparecem quando a pessoa se cadastra no e-book. Se ela trocar de aparelho ou limpar o navegador, conta como visitante novo.</p>
-      </section>
+          {dash.campaigns.length > 0 && (
+            <>
+              <h4>Campanhas (UTM)</h4>
+              <div className="adm-scroll">
+                <table className="adm-table">
+                  <thead><tr><th>Campanha</th><th>Fonte / meio</th><th>Visitas</th><th>WhatsApp</th><th>Leads</th></tr></thead>
+                  <tbody>{dash.campaigns.map((c, i) => <tr key={i}><td><b>{c.campaign}</b></td><td>{c.source} / {c.medium}</td><td>{n(c.sessions)}</td><td>{n(c.whatsapp)}</td><td>{n(c.leads)}</td></tr>)}</tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </section>
+        <div className="adm-stack">
+          <section className="adm-card">
+            <div className="adm-card-head"><h3>Cidades</h3></div>
+            <div className="adm-scroll">
+              <table className="adm-table">
+                <thead><tr><th>Cidade</th><th>Estado</th><th>Visitas</th><th>WhatsApp</th><th>Leads</th></tr></thead>
+                <tbody>
+                  {dash.cities.length === 0 && <tr><td colSpan={5} className="adm-empty">Sem dados no período.</td></tr>}
+                  {dash.cities.slice(0, 12).map((c, i) => <tr key={i}><td><b>{c.city}</b></td><td>{c.region || '—'}</td><td>{n(c.sessions)}</td><td>{n(c.whatsapp)}</td><td>{n(c.leads)}</td></tr>)}
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section className="adm-card">
+            <div className="adm-card-head"><h3>Página de entrada</h3></div>
+            <Bars rows={dash.landing_pages as unknown as Row[]} label={(r) => pageName(String(r.page))} value={(r) => Number(r.sessions)} />
+          </section>
+        </div>
+      </div>
 
+      {/* ---------- PESSOAS ---------- */}
+      <h2 className="adm-group" id="pessoas">Visitantes e leads</h2>
       <section className="adm-card">
         <div className="adm-card-head">
-          <h2>Leads do e-book ({n(leads.length)})</h2>
-          <a className="adm-btn" href="/api/admin/leads">Baixar todos (Excel/CSV)</a>
+          <h3>Leads do e-book <span className="adm-count">{n(leads.length)}</span></h3>
+          <a className="adm-btn" href="/api/admin/leads"><Download size={15} /> Baixar todos (Excel)</a>
         </div>
         {leads.length === 0 ? <p className="adm-empty">Nenhum lead no período.</p> : (
           <div className="adm-scroll">
@@ -477,16 +505,15 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               <tbody>
                 {leads.map((l, i) => {
                   const phone = String(l.phone || '');
-                  const wa = `https://wa.me/${phone.startsWith('55') ? phone : `55${phone}`}`;
                   return (
                     <tr key={i}>
-                      <td>{new Date(String(l.created_at)).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' })}</td>
-                      <td>{l.name}</td>
+                      <td>{fmtDate(String(l.created_at))}</td>
+                      <td><b>{l.name}</b></td>
                       <td><a href={`mailto:${l.email}`}>{l.email}</a></td>
-                      <td>{phone.replace(/^(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3')}</td>
+                      <td>{fmtPhone(phone)}</td>
                       <td>{l.city || '—'}</td>
                       <td>{[l.utm_source, l.utm_campaign].filter(Boolean).join(' / ') || '—'}</td>
-                      <td><a className="adm-wa" href={wa} target="_blank" rel="noopener noreferrer">Chamar</a></td>
+                      <td><a className="adm-wa" href={`https://wa.me/${phone.startsWith('55') ? phone : `55${phone}`}`} target="_blank" rel="noopener noreferrer">Chamar</a></td>
                     </tr>
                   );
                 })}
@@ -496,7 +523,37 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         )}
       </section>
 
-      <p className="adm-foot">Horário de Brasília. Visitas de teste (localhost e admin logado) ficam fora dos números. Robôs são filtrados. Quem bloqueia JavaScript não é contado.</p>
+      <section className="adm-card">
+        <div className="adm-card-head"><h3>Visitantes {visitors && <span className="adm-count">{n(visitors.length)}</span>}</h3></div>
+        {visitors === null ? (
+          <p className="adm-empty">Para ver esta lista, rode o arquivo <code>supabase/004_visitantes.sql</code> no SQL Editor do Supabase.</p>
+        ) : visitors.length === 0 ? <p className="adm-empty">Nenhum visitante no período.</p> : (
+          <div className="adm-scroll tall">
+            <table className="adm-table">
+              <thead><tr><th>Código</th><th>Quem é</th><th>Visitas</th><th>Primeira vez</th><th>Última vez</th><th>Tempo total</th><th>WhatsApp</th><th>Ligar</th><th>Cidade</th><th>Veio de</th></tr></thead>
+              <tbody>
+                {visitors.map((v) => (
+                  <tr key={v.code + v.first_seen}>
+                    <td><code>{v.code}</code></td>
+                    <td>{v.name ? <><b>{v.name}</b><small className="adm-sub">{fmtPhone(v.phone || '')} · {v.email}</small></> : <span className="adm-muted">Anônimo</span>}</td>
+                    <td><b>{n(v.visits)}</b>{v.visits > 1 && <span className="adm-tag t-whatsapp" style={{ marginLeft: 6 }}>voltou</span>}{v.visits !== v.visits_period && <small className="adm-sub">{n(v.visits_period)} no período</small>}</td>
+                    <td>{fmtDate(v.first_seen)}</td>
+                    <td>{fmtDate(v.last_seen)}</td>
+                    <td>{fmtTime(v.total_seconds)}</td>
+                    <td>{v.whatsapp_visits > 0 ? `${n(v.whatsapp_visits)}×` : '—'}</td>
+                    <td>{v.phone_clicks > 0 ? `${n(v.phone_clicks)}×` : '—'}</td>
+                    <td>{v.city || '—'}</td>
+                    <td>{v.first_source || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <p className="adm-note">Cada aparelho recebe um código na primeira visita. Nome e telefone aparecem quando a pessoa se cadastra no e-book. Se ela trocar de aparelho ou limpar o navegador, conta como visitante novo.</p>
+      </section>
+
+      <p className="adm-foot">Horário de Brasília. Visitas de teste (localhost e admin logado) ficam fora dos números. Robôs são filtrados.</p>
     </main>
   );
 }
