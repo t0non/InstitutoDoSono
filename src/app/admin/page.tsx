@@ -152,6 +152,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   let prev: Dash | null = null;
   let leads: Row[] = [];
   let visitors: Visitor[] | null = null;
+  let keywords: { keyword: string; campaign: string | null; sessions: number; avg_seconds: number; whatsapp: number; leads: number }[] | null = null;
   let error = '';
   try {
     [dash, prev, leads] = await Promise.all([
@@ -167,6 +168,9 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     try {
       visitors = await sbRpc<Visitor[]>('admin_visitors', { p_from: period.from.toISOString(), p_to: period.to.toISOString(), p_include_test: includeTest });
     } catch { visitors = null; } // ajuste 004 ainda não rodado
+    try {
+      keywords = await sbRpc('admin_keywords', { p_from: period.from.toISOString(), p_to: period.to.toISOString(), p_include_test: includeTest });
+    } catch { keywords = null; } // ajuste 005 ainda não rodado
   }
 
   if (!dash) {
@@ -490,6 +494,26 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           </section>
         </div>
       </div>
+
+      <section className="adm-card">
+        <div className="adm-card-head"><h3>Palavras-chave dos anúncios</h3></div>
+        {keywords === null ? (
+          <p className="adm-empty">Para ver esta lista, rode o arquivo <code>supabase/005_palavras_chave.sql</code> no SQL Editor do Supabase.</p>
+        ) : keywords.length === 0 ? (
+          <p className="adm-empty">Nenhuma visita de anúncio com palavra-chave no período. Elas aparecem depois que o “Sufixo do URL final” é configurado no Google Ads.</p>
+        ) : (
+          <div className="adm-scroll">
+            <table className="adm-table">
+              <thead><tr><th>Palavra-chave</th><th>Campanha</th><th>Visitas</th><th>Tempo médio</th><th>WhatsApp</th><th>Leads</th></tr></thead>
+              <tbody>
+                {keywords.map((k) => (
+                  <tr key={k.keyword}><td><b>{k.keyword}</b></td><td>{k.campaign || '—'}</td><td>{n(k.sessions)}</td><td>{fmtTime(k.avg_seconds)}</td><td>{n(k.whatsapp)} <small className="adm-muted">({pct(k.whatsapp, k.sessions)}%)</small></td><td>{n(k.leads)}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
 
       {/* ---------- PESSOAS ---------- */}
       <h2 className="adm-group" id="pessoas">Visitantes e leads</h2>

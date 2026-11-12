@@ -30,7 +30,13 @@ v as (
          count(*) filter (where s.clicked_whatsapp) whatsapp_visits,
          (array_agg(s.city order by s.started_at desc) filter (where s.city is not null))[1] city,
          (array_agg(s.device order by s.started_at desc))[1] device,
-         (array_agg(coalesce(nullif(s.utm_source,''), nullif(s.referrer_host,''), 'Direto') order by s.started_at))[1] first_source
+         (array_agg(case
+            when s.gclid is not null or s.utm_medium in ('cpc','ppc','paid','paid_social') then
+              'Anúncio ' || initcap(coalesce(nullif(s.utm_source,''),'pago')) || coalesce(' · ' || nullif(s.utm_campaign,''), '')
+            when nullif(s.utm_source,'') is not null then s.utm_source || coalesce(' / ' || nullif(s.utm_medium,''), '')
+            when s.referrer_host ~ '(^|\.)google\.' then 'Google (busca orgânica)'
+            when nullif(s.referrer_host,'') is not null then s.referrer_host
+            else 'Direto' end order by s.started_at))[1] first_source
   from site_sessions s join active a on a.visitor_id = s.visitor_id
   where (p_include_test or not s.is_test)
   group by s.visitor_id
