@@ -109,6 +109,8 @@ function Bars({ rows, label, value, format = n, green = false }: { rows: Row[]; 
   );
 }
 
+type Polisso = { opens: number; sessions: number; continued: number; gave_up: number; by_origin: { label: string; section: string; opens: number }[]; by_device: { device: string; sessions: number; continued: number }[]; by_day: { day: string; opens: number; continued: number }[] };
+
 type Visitor = { code: string; visits: number; visits_period: number; first_seen: string; last_seen: string; total_seconds: number; pageviews: number; whatsapp_visits: number; phone_clicks: number; city: string | null; device: string | null; first_source: string | null; name: string | null; phone: string | null; email: string | null };
 
 const pct = (a: number, b: number) => (b ? Math.round((a / b) * 1000) / 10 : 0);
@@ -152,6 +154,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   let prev: Dash | null = null;
   let leads: Row[] = [];
   let visitors: Visitor[] | null = null;
+  let polisso: Polisso | null = null;
   let keywords: { keyword: string; campaign: string | null; sessions: number; avg_seconds: number; whatsapp: number; leads: number }[] | null = null;
   let error = '';
   try {
@@ -171,6 +174,9 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     try {
       keywords = await sbRpc('admin_keywords', { p_from: period.from.toISOString(), p_to: period.to.toISOString(), p_include_test: includeTest });
     } catch { keywords = null; } // ajuste 005 ainda não rodado
+    try {
+      polisso = await sbRpc<Polisso>('admin_polisso', { p_from: period.from.toISOString(), p_to: period.to.toISOString(), p_include_test: includeTest });
+    } catch { polisso = null; } // ajuste 006 ainda não rodado
   }
 
   if (!dash) {
@@ -406,6 +412,48 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           ))}
           <div className="adm-funnel-step muted"><strong>{n(dash.ebook.closes)}</strong><span>Fecharam sem cadastrar</span></div>
         </div>
+      </section>
+
+      <section className="adm-card" id="polissonografia">
+        <div className="adm-card-head"><h3>Pop-up da polissonografia (só particular)</h3></div>
+        {polisso === null ? (
+          <p className="adm-empty">Para ver estes números, rode o arquivo <code>supabase/006_popup_polissonografia.sql</code> no SQL Editor do Supabase.</p>
+        ) : (
+          <>
+            <div className="adm-funnel">
+              <div className="adm-funnel-step"><strong>{n(polisso.sessions)}</strong><span>Viram o aviso</span><small>{n(polisso.opens)} aberturas</small></div>
+              <div className="adm-funnel-step"><strong>{n(polisso.continued)}</strong><span>Seguiram para o WhatsApp</span>{polisso.sessions > 0 && <small>{pct(polisso.continued, polisso.sessions)}% de quem viu</small>}</div>
+              <div className="adm-funnel-step muted"><strong>{n(polisso.gave_up)}</strong><span>Desistiram ao saber que é particular</span>{polisso.sessions > 0 && <small>{pct(polisso.gave_up, polisso.sessions)}% de quem viu</small>}</div>
+            </div>
+            <div className="adm-grid2">
+              <div>
+                <h4>De qual botão abriram</h4>
+                {polisso.by_origin.length === 0 ? <p className="adm-empty">Sem dados no período.</p> : (
+                  <table className="adm-table">
+                    <thead><tr><th>Botão</th><th>Onde</th><th>Aberturas</th></tr></thead>
+                    <tbody>{polisso.by_origin.map((o, i) => <tr key={i}><td><b>{o.label}</b></td><td>{o.section}</td><td>{n(o.opens)}</td></tr>)}</tbody>
+                  </table>
+                )}
+              </div>
+              <div>
+                <h4>Por aparelho</h4>
+                {polisso.by_device.length === 0 ? <p className="adm-empty">Sem dados no período.</p> : (
+                  <table className="adm-table">
+                    <thead><tr><th>Aparelho</th><th>Viram</th><th>Seguiram</th></tr></thead>
+                    <tbody>{polisso.by_device.map((d, i) => <tr key={i}><td><b>{DEVICES[d.device] || (d.device === '?' ? 'Não identificado' : d.device)}</b></td><td>{n(d.sessions)}</td><td>{n(d.continued)} <small className="adm-muted">({pct(d.continued, d.sessions)}%)</small></td></tr>)}</tbody>
+                  </table>
+                )}
+                {polisso.by_day.length > 0 && (
+                  <>
+                    <h4>Por dia</h4>
+                    <Bars green rows={polisso.by_day as unknown as Row[]} label={(r) => `${String(r.day).slice(8, 10)}/${String(r.day).slice(5, 7)} · ${r.opens} viram`} value={(r) => Number(r.continued)} />
+                  </>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+        <p className="adm-note">O aviso aparece quando alguém clica num botão de WhatsApp da polissonografia. Só conta como “clicou no WhatsApp” no resto do painel quem segue pelo botão do aviso. Compare com o período anterior para ver se o aviso está filtrando curiosos sem derrubar os agendamentos.</p>
       </section>
 
       {/* ---------- QUANDO E COMO ---------- */}

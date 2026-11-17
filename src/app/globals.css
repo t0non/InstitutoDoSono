@@ -1567,3 +1567,35 @@ a.dev-credit:hover { opacity:1; text-decoration:underline; text-underline-offset
 .dev-credit-logo { width:22px; height:22px; border-radius:6px; object-fit:cover; }
 .dev-credit strong { font-weight:700; }
 .clinic-footer-bottom .dev-credit strong, .clinic-footer-bottom .dev-credit span { color:#fff !important; }
+
+/* ---------- Pop-up polissonografia (só particular) ---------- */
+.pso { width:min(420px,calc(100% - 32px)); max-height:calc(100dvh - 32px); margin:auto; padding:0; border:0; background:transparent; overflow:visible; }
+.pso::backdrop { background:rgba(10,30,60,.55); backdrop-filter:blur(3px); }
+html:has(.pso[open]) { overflow:hidden; }
+.pso[open] .pso-card { animation:ebk-in .3s cubic-bezier(.2,.8,.2,1); }
+.pso-card { position:relative; max-height:calc(100dvh - 32px); overflow:auto; border-radius:22px; background:#fff; box-shadow:0 30px 80px rgba(7,40,80,.4); color:#1e293b; text-align:center; }
+.pso-close { position:absolute; top:10px; right:10px; z-index:2; display:grid; place-items:center; width:36px; height:36px; border:0; border-radius:999px; background:rgba(255,255,255,.15); color:#fff; cursor:pointer; }
+.pso-close:hover { background:rgba(255,255,255,.28); }
+.pso-close:focus { outline:none; }
+.pso-close:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+.pso-head { padding:30px 52px 26px; background:linear-gradient(160deg,#0b66c3 0%,#073b7a 100%); color:#fff; }
+.pso-flag { display:inline-block; padding:6px 14px; border-radius:999px; background:#fbbf24; color:#422006; font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
+.pso h2 { margin:0 !important; color:#fff !important; font-size:28px !important; line-height:1.18 !important; font-weight:400 !important; text-align:center !important; }
+.pso-note { margin:10px 0 0; color:#dbeafe; font-size:15.5px; line-height:1.45; }
+.pso-refund { display:flex; align-items:center; gap:14px; margin:20px 28px 0; padding:14px 16px; border:2px solid #86efac; border-radius:16px; background:#f0fdf4; text-align:left; }
+.pso-refund-ico { flex-shrink:0; width:52px; height:52px; object-fit:contain; }
+.pso-refund b { display:block; color:#14532d; font-size:17px; font-weight:600; line-height:1.25; }
+.pso-refund span { display:block; margin-top:3px; color:#166534; font-size:14px; line-height:1.4; }
+.pso-list { list-style:none; margin:0; padding:18px 28px 0; display:flex; flex-wrap:wrap; justify-content:center; gap:10px 22px; }
+.pso-list li { display:flex; align-items:center; gap:8px; color:#0f2a4a; font-size:15.5px; font-weight:500; }
+.pso-list img { flex-shrink:0; width:28px; height:28px; object-fit:contain; }
+.pso-cta { display:flex; align-items:center; justify-content:center; gap:10px; width:calc(100% - 56px); min-height:56px; margin:22px 28px 0; padding:12px 20px; border-radius:14px; background:#16a34a; color:#fff !important; font-size:17px; font-weight:600; text-decoration:none; box-shadow:0 10px 24px rgba(22,163,74,.3); transition:transform .15s, filter .15s; }
+.pso-cta:hover { transform:translateY(-2px); filter:brightness(1.05); }
+.pso-back { display:block; margin:10px auto 0; padding:6px 10px 18px; border:0; background:transparent; color:#64748b; font:inherit; font-size:14px; text-decoration:underline; cursor:pointer; }
+@media (max-width:520px) {
+  .pso-head { padding:28px 20px 22px; }
+  .pso h2 { font-size:24px !important; }
+  .pso-refund { margin:18px 20px 0; }
+  .pso-list { padding:16px 20px 0; }
+  .pso-cta { width:calc(100% - 40px); margin:20px 20px 0; }
+}

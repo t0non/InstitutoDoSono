@@ -64,6 +64,7 @@ const SECTION_NAMES: Record<string, string> = {
   'mobile-sticky-bar': 'Barra fixa (celular)',
   'smart-chat-widget': 'Chat da Beth',
   ebk: 'Pop-up do e-book',
+  pso: 'Pop-up polissonografia',
   'coverage-hero': 'Onde atendemos — topo',
   'coverage-info': 'Onde atendemos — informações',
   'coverage-services': 'Onde atendemos — serviços',
@@ -72,7 +73,7 @@ const SECTION_NAMES: Record<string, string> = {
 };
 const GENERIC = /^(site-content-width|container|info-page|py-|px-|bg-|border|flex|grid|relative|w-|mx-|is-)/;
 const AREA_SELECTOR = [
-  '[data-track-section]', 'dialog.ebk', '#smart-chat-widget', '.mobile-sticky-bar', '.institute-mobile-nav', 'header.institute-header',
+  '[data-track-section]', 'dialog.ebk', 'dialog.pso', '#smart-chat-widget', '.mobile-sticky-bar', '.institute-mobile-nav', 'header.institute-header',
   'main > section', 'main > header', 'main > div', 'header.hero', 'footer', '.coverage-page section',
 ].join(', ');
 
@@ -152,7 +153,7 @@ function deviceInfo() {
   };
 }
 
-function sectionNameOf(el: Element | null): string | undefined {
+export function sectionNameOf(el: Element | null): string | undefined {
   const sec = el?.closest(AREA_SELECTOR);
   if (!sec) return undefined;
   const h = sec as HTMLElement;
