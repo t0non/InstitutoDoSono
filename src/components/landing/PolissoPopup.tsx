@@ -21,7 +21,7 @@ const popup = {
   // Destaque de reembolso (deixe refund: null para esconder)
   refund: {
     title: 'Seu plano pode te devolver o valor',
-    text: 'Damos a nota fiscal para você pedir reembolso ao convênio.',
+    text: 'Com a nota fiscal, você pode verificar junto ao seu plano a possibilidade de reembolso.',
   } as { title: string; text: string } | null,
   bullets: [
     { icon: '/images/popup/cartao.png', text: 'Parcelamos no cartão' },
